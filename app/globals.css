@@ -100,3 +100,21 @@ body {
 .hairline-right {
   border-right: 1px solid #E5E3DD;
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee linear infinite reverse;
+}
+

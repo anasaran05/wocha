@@ -28,8 +28,20 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md hairline-bottom">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <>
+      {/* Top Streetwear Announcement Bar */}
+      <div className="bg-[#111111] text-[#FAFAF8] text-[10px] sm:text-[11px] font-mono py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2.5 overflow-hidden select-none border-b border-neutral-800">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="font-semibold">Drop 04 Live</span>
+        <span className="text-neutral-500">&bull;</span>
+        <span className="hidden sm:inline">Worldwide Express Shipping</span>
+        <span className="hidden sm:inline text-neutral-500">&bull;</span>
+        <span>By Creatives For Creatives</span>
+      </div>
+
+      <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md hairline-bottom">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
         {/* Left: Brand Wordmark */}
         <div className="flex items-center gap-8">
           <Link
@@ -214,5 +226,7 @@ export function Navbar() {
         </div>
       )}
     </header>
+    </>
   );
 }
+
