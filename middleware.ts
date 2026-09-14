@@ -1,0 +1,65 @@
+import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-anon-key-wocha';
+
+  // Only run live Supabase session update if using real credentials
+  if (supabaseUrl && !supabaseUrl.includes('mock.supabase.co')) {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          response = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    });
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // Guard /admin routes
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      if (!user) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/auth/login';
+        url.searchParams.set('redirect', request.nextUrl.pathname);
+        return NextResponse.redirect(url);
+      }
+    }
+
+    // Guard /account routes
+    if (request.nextUrl.pathname.startsWith('/account')) {
+      if (!user) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/auth/login';
+        url.searchParams.set('redirect', request.nextUrl.pathname);
+        return NextResponse.redirect(url);
+      }
+    }
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: [
+    '/admin/:path*',
+    '/account/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+};
