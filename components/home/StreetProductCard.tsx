@@ -92,19 +92,12 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
 
         {/* Badges Overlay */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between pointer-events-none z-10">
-          <div className="flex flex-col gap-1">
-            {product.tag ? (
-              <span className="bg-[#111111] text-white text-[10px] font-mono uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
-                {product.tag}
-              </span>
-            ) : product.isNewRelease ? (
-              <span className="bg-[#111111] text-white text-[10px] font-mono uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
-                Drop 04
-              </span>
-            ) : null}
-
+          <div className="flex items-center gap-1.5">
+            <span className="bg-white/95 backdrop-blur-sm text-[#482922] text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full border border-[#D5D0C6] shadow-2xs">
+              New In
+            </span>
             {product.weight && (
-              <span className="bg-white/90 backdrop-blur-sm text-[#111111] text-[10px] font-mono px-2 py-0.5 rounded border border-[#E5E3DD] tracking-wide w-max">
+              <span className="hidden sm:inline-block bg-[#EFECE6]/90 text-[#482922] text-[10px] font-mono px-2 py-0.5 rounded-full border border-[#E3DFD7]">
                 {product.weight}
               </span>
             )}
@@ -115,9 +108,9 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             type="button"
             onClick={handleToggleWishlist}
             aria-label="Toggle wishlist"
-            className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E5E3DD] flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-colors shadow-sm cursor-pointer"
+            className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#EDEAE3] flex items-center justify-center text-[#482922] hover:bg-[#482922] hover:text-white transition-colors shadow-2xs cursor-pointer"
           >
-            <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-[#111111] text-[#111111]' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 stroke-[1.7] ${isLiked ? 'fill-[#482922] text-[#482922]' : ''}`} />
           </button>
         </div>
 

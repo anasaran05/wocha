@@ -1,232 +1,310 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { User, Heart, ShoppingBag, Search, X, Menu } from 'lucide-react';
 import { useCartStore } from '@/lib/cart/store';
+import { useWishlistStore } from '@/lib/wishlist/store';
 import { useAuth } from '@/lib/auth/auth';
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { toggleDrawer, getItemCount } = useCartStore();
+  const { items: wishlistItems } = useWishlistStore();
   const { user, logout } = useAuth();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const itemCount = mounted ? getItemCount() : 0;
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
 
-  const navLinks = [
-    { label: 'Shop All', href: '/shop' },
-    { label: 'Drop Shoulders', href: '/shop?category=t-shirts' },
-    { label: 'Hoodies', href: '/shop?category=hoodies' },
-    { label: 'Upcoming Drops', href: '/upcoming' },
-  ];
+  const itemCount = mounted ? getItemCount() : 0;
+  const wishlistCount = mounted ? wishlistItems.length : 0;
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+    }
+  };
 
   return (
-    <>
-      {/* Top Streetwear Announcement Bar */}
-      <div className="bg-[#111111] text-[#FAFAF8] text-[10px] sm:text-[11px] font-mono py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2.5 overflow-hidden select-none border-b border-neutral-800">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="font-semibold">Drop 04 Live</span>
-        <span className="text-neutral-500">&bull;</span>
-        <span className="hidden sm:inline">Worldwide Express Shipping</span>
-        <span className="hidden sm:inline text-neutral-500">&bull;</span>
-        <span>By Creatives For Creatives</span>
+    <div className="sticky top-0 z-50 w-full bg-white">
+      {/* =========================================================================
+          1. TOP RUNNING TICKER / ANNOUNCEMENT BAR (Exact Nude Project Tone)
+          ========================================================================= */}
+      <div className="w-full bg-[#EFECE6] border-b border-[#E3DFD7] overflow-hidden py-1.5 select-none">
+        <div className="flex w-max animate-marquee duration-[32s]">
+          {[1, 2, 3, 4, 5, 6].map((idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
+            >
+              <span>30 days Easy Returns & Exchanges</span>
+              <span className="text-[#482922]/50 font-bold">&middot;</span>
+              <span>No extra fees on US orders - Taxes & Duties Included</span>
+              <span className="text-[#482922]/50 font-bold">&middot;</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md hairline-bottom">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      {/* =========================================================================
+          2. MAIN HEADER NAVIGATION BAR
+          ========================================================================= */}
+      <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#EDEAE3] transition-all">
+        <div className="max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-10 h-16 sm:h-[66px] flex items-center justify-between">
+          
+          {/* LEFT GROUP: Logo + Shop & New In */}
+          <div className="flex items-center gap-6 sm:gap-8 lg:gap-10">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center group cursor-pointer select-none"
+              aria-label="Wocha Project Home"
+            >
+              <span className="text-[21px] sm:text-[23px] font-black tracking-tight text-[#482922] transition-opacity group-hover:opacity-85 font-sans flex items-baseline">
+                Wocha<sup className="text-[10px] font-extrabold ml-0.5 relative -top-2">®</sup>
+                <span className="font-bold ml-1">Project</span>
+              </span>
+            </Link>
 
-        {/* Left: Brand Wordmark */}
-        <div className="flex items-center gap-8">
-          <Link
-            href="/"
-            className="flex items-center hover:opacity-85 transition-opacity py-1"
-            aria-label="WOCHA Home"
-          >
-            <Image
-              src="/wocha.png"
-              alt="WOCHA"
-              width={130}
-              height={32}
-              className="h-7 w-auto object-contain"
-              priority
-            />
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 text-xs uppercase tracking-wide">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`transition-colors py-1 ${
-                    isActive
-                      ? 'text-[#111111] font-semibold border-b border-[#111111]'
-                      : 'text-[#6B6B6B] hover:text-[#111111]'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Right Actions: Auth, Bag, Mobile Toggle */}
-        <div className="flex items-center gap-4 text-xs">
-          {/* Auth State */}
-          <div className="hidden sm:flex items-center gap-3">
-            {mounted && user ? (
-              <div className="flex items-center gap-3">
-                {(user.role === 'admin' || user.role === 'staff') && (
-                  <Link
-                    href="/admin"
-                    className="text-[10px] font-mono uppercase bg-black text-white px-2 py-0.5 rounded font-bold hover:bg-neutral-800 transition-colors"
-                  >
-                    Admin Portal
-                  </Link>
-                )}
-                <Link
-                  href="/account"
-                  className="text-[#111111] hover:underline font-mono text-[11px] font-semibold"
-                >
-                  {user.name || user.email.split('@')[0]}
-                </Link>
-                <button
-                  onClick={logout}
-                  className="text-[#6B6B6B] hover:text-[#111111] underline text-[11px] cursor-pointer"
-                >
-                  Sign out
-                </button>
-              </div>
-            ) : (
+            {/* Left Nav Links: Shop & New In */}
+            <nav className="hidden md:flex items-center gap-5 sm:gap-6 text-[14px] text-[#482922] font-medium tracking-tight">
               <Link
-                href="/auth/login"
-                className="text-[#111111] hover:text-[#6B6B6B] transition-colors uppercase tracking-wider font-mono text-[11px]"
+                href="/shop"
+                className={`transition-colors hover:text-black ${
+                  pathname === '/shop' ? 'font-semibold text-black' : ''
+                }`}
               >
-                Sign In
+                Shop
               </Link>
-            )}
+              <Link
+                href="/shop?filter=new"
+                className="transition-colors hover:text-black"
+              >
+                New In
+              </Link>
+            </nav>
           </div>
 
-          <span className="hidden sm:inline-block w-px h-4 bg-[#E5E3DD]" />
-
-          {/* Wishlist Link */}
-          <Link
-            href="/wishlist"
-            className="hidden sm:flex items-center gap-1 py-1.5 px-2.5 text-[#111111] hover:bg-white hairline-border rounded-lg transition-colors cursor-pointer text-xs font-mono"
-            aria-label="Personal Archive Wishlist"
-          >
-            <span className="text-xs uppercase font-mono font-medium">Saved</span>
-          </Link>
-
-          <span className="hidden sm:inline-block w-px h-4 bg-[#E5E3DD]" />
-
-          {/* Bag Trigger Button */}
-          <button
-            onClick={toggleDrawer}
-            className="flex items-center gap-1.5 py-1.5 px-2.5 text-[#111111] hover:bg-white hairline-border rounded-lg transition-colors cursor-pointer"
-            aria-label="Open shopping bag"
-          >
-            <span className="text-xs uppercase font-mono font-medium">Bag</span>
-            <span
-              className="font-mono text-xs text-[#111111] font-semibold"
-              suppressHydrationWarning
-            >
-              [{itemCount}]
-            </span>
-          </button>
-
-          {/* Mobile menu hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 text-[#111111] hairline-border rounded-lg hover:bg-white"
-            aria-label="Toggle navigation menu"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {mobileMenuOpen ? (
-                <path strokeLinecap="square" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="square" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FAFAF8] hairline-top px-4 py-6 space-y-4">
-          <nav className="flex flex-col space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-wide text-[#111111] hover:text-[#6B6B6B] font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* CENTER GROUP: Collections, Wocha Members, Stores */}
+          <nav className="hidden lg:flex items-center gap-7 sm:gap-8 text-[14px] text-[#482922] font-medium tracking-tight">
             <Link
-              href="/wishlist"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-sm uppercase tracking-wide text-[#111111] hover:text-[#6B6B6B] font-medium"
+              href="/shop"
+              className="transition-colors hover:text-black"
             >
-              Saved Items
+              Collections
+            </Link>
+            <Link
+              href="/upcoming"
+              className="transition-colors hover:text-black"
+            >
+              Wocha Members
+            </Link>
+            <Link
+              href="/shop?view=stores"
+              className="transition-colors hover:text-black"
+            >
+              Stores
             </Link>
           </nav>
 
-          <div className="hairline-top pt-4 flex items-center justify-between">
-            {mounted && user ? (
-              <div className="flex items-center justify-between w-full">
-                <span className="text-xs font-mono text-[#6B6B6B]">{user.email}</span>
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="text-xs text-[#111111] underline"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-4">
-                <Link
-                  href="/auth/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="wocha-btn rounded-lg px-4 py-1.5 text-xs text-white"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="wocha-btn-secondary rounded-lg px-4 py-1.5 text-xs text-[#111111]"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+          {/* RIGHT GROUP: Search ▮, Account, Wishlist, Bag */}
+          <div className="flex items-center gap-4 sm:gap-6 text-[14px] text-[#482922]">
+            {/* Search ▮ */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="hidden sm:flex items-center gap-1.5 hover:text-black transition-colors cursor-pointer font-medium"
+              aria-label="Toggle search"
+            >
+              <span>Search</span>
+              <span className="inline-block w-1.5 h-3.5 bg-[#482922] align-middle" />
+            </button>
+
+            {/* Account / User Icon */}
+            <Link
+              href={mounted && user ? '/account' : '/auth/login'}
+              className="hover:text-black transition-colors p-1"
+              aria-label="User Account"
+            >
+              <User className="w-[19px] h-[19px] stroke-[1.7]" />
+            </Link>
+
+            {/* Wishlist Heart Icon */}
+            <Link
+              href="/wishlist"
+              className="relative hover:text-black transition-colors p-1"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-[19px] h-[19px] stroke-[1.7]" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#482922] text-white text-[9px] font-bold flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Shopping Bag Icon */}
+            <button
+              type="button"
+              onClick={toggleDrawer}
+              className="relative hover:text-black transition-colors p-1 cursor-pointer"
+              aria-label="Shopping Bag"
+            >
+              <ShoppingBag className="w-[19px] h-[19px] stroke-[1.7]" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#482922] text-white text-[9px] font-bold flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
+            </button>
+
+            {/* Mobile Hamburger Menu Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-1 hover:text-black transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
-      )}
-    </header>
-    </>
+
+        {/* =========================================================================
+            3. EXPANDABLE SEARCH BAR
+            ========================================================================= */}
+        {searchOpen && (
+          <div className="border-t border-[#EDEAE3] bg-white px-4 sm:px-8 py-3 animate-in fade-in duration-150">
+            <form onSubmit={handleSearchSubmit} className="max-w-3xl mx-auto flex items-center gap-3">
+              <Search className="w-4 h-4 text-[#482922]/60 shrink-0" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products, hoodies, tees, collections..."
+                className="flex-1 bg-transparent text-[14px] text-[#482922] placeholder:text-[#482922]/40 focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setSearchOpen(false)}
+                className="text-[#482922]/60 hover:text-[#482922] p-1"
+                aria-label="Close search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* =========================================================================
+            4. MOBILE DRAWER MENU
+            ========================================================================= */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-white border-t border-[#EDEAE3] px-6 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
+            {/* Mobile Search Input */}
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 pb-3 border-b border-[#EDEAE3]">
+              <Search className="w-4 h-4 text-[#482922]/60" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                className="flex-1 text-sm text-[#482922] placeholder:text-[#482922]/40 focus:outline-none"
+              />
+            </form>
+
+            <nav className="flex flex-col space-y-3.5 text-[15px] font-medium text-[#482922]">
+              <Link
+                href="/shop"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black"
+              >
+                Shop All
+              </Link>
+              <Link
+                href="/shop?filter=new"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black"
+              >
+                New In
+              </Link>
+              <Link
+                href="/shop"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black"
+              >
+                Collections
+              </Link>
+              <Link
+                href="/upcoming"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black"
+              >
+                Wocha Members
+              </Link>
+              <Link
+                href="/shop?view=stores"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black"
+              >
+                Stores
+              </Link>
+            </nav>
+
+            <div className="pt-4 border-t border-[#EDEAE3] flex items-center justify-between text-xs text-[#482922]">
+              {mounted && user ? (
+                <div className="flex items-center justify-between w-full">
+                  <span>{user.email}</span>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="underline font-semibold"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="font-semibold underline"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-[#6B6B6B]"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </header>
+    </div>
   );
 }
-

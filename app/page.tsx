@@ -190,104 +190,85 @@ export default function HomePage() {
     <ReactLenis root>
       <div className="w-full bg-[#FAFAF8] text-[#111111] selection:bg-[#111111] selection:text-white">
         {/* =========================================================================
-            1. HIGH-IMPACT EDITORIAL STREET HERO (Nude Project Style)
+            1. EXACT NUDE PROJECT EDITORIAL HERO (As Shown in Reference)
             ========================================================================= */}
-        <section className="relative w-full min-h-[88vh] sm:min-h-[92vh] flex flex-col justify-between overflow-hidden bg-[#0D0D0D] text-white">
-          {/* Background Cinematic Image with Subtle Grain */}
-          <div className="absolute inset-0 z-0 overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=2000&q=85"
-              alt="WOCHA Streetwear Editorial Campaign"
-              className="w-full h-full object-cover object-center scale-105 filter brightness-70 contrast-110"
-            />
-            {/* Gradients to blend smoothly */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-black/40 to-black/60" />
-          </div>
+        <section className="relative w-full bg-white overflow-hidden border-b border-[#EDEAE3]">
+          <div className="max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
+            <div className="relative w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] rounded-2xl overflow-hidden bg-[#E9EBEA] flex flex-col justify-between p-6 sm:p-10 lg:p-14 shadow-xs">
+              
+              {/* Background Model Studio Lineup */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="/hero-nude.jpg"
+                  alt="WOCHA Fall/Winter Lineup"
+                  className="w-full h-full object-cover object-center"
+                />
+                {/* Subtle soft gradient on left bottom to make text legible */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent lg:hidden" />
+              </div>
 
-          {/* Top Status Indicators inside Hero */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] font-mono uppercase tracking-widest text-white">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                Drop 04 &bull; Now Live
-              </span>
-              <span className="hidden sm:inline-block text-[11px] font-mono text-neutral-300 uppercase tracking-wider">
-                Limited Edition Batches
-              </span>
-            </div>
-
-            {/* Drop Timer Countdown Pill */}
-            <div className="flex items-center gap-2 px-3.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-neutral-800 text-[11px] font-mono text-neutral-300">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Next Drop In:</span>
-              <span className="text-white font-bold tracking-wider">
-                {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
-              </span>
-            </div>
-          </div>
-
-          {/* Hero Typography & Street Statement */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-24 flex flex-col items-start justify-end">
-            <div className="max-w-3xl space-y-6">
-              <div className="space-y-2">
-                <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-neutral-300 block">
-                  WOCHA STUDIOS &bull; CHAPTER 04
+              {/* Top Row: Small Capsule Tag */}
+              <div className="relative z-10 flex items-center justify-between">
+                <span className="text-[11px] sm:text-xs font-mono tracking-widest uppercase text-[#482922] bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-black/5">
+                  Fall / Winter 2026
                 </span>
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-white">
-                  Not Just Clothes.
-                  <br />
-                  <span className="italic font-light text-neutral-300">A Movement.</span>
-                </h1>
               </div>
 
-              <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-xl font-normal leading-relaxed">
-                Born for those who demand heavyweight substance over cheap disposable trends. 
-                Knitted from 280–520 GSM organic cotton with architectural boxy silhouettes.
-              </p>
+              {/* Main Content Area */}
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end w-full">
+                
+                {/* Bottom-Left Overlay: FW26-01 & New Arrivals */}
+                <div className="lg:col-span-7 space-y-4 text-white">
+                  <div className="space-y-1">
+                    <span className="text-xs sm:text-sm font-mono tracking-[0.2em] uppercase text-white/90 drop-shadow-sm block font-medium">
+                      FW26-01
+                    </span>
+                    <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-lg font-sans">
+                      New Arrivals
+                    </h2>
+                  </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-4">
-                <a
-                  href="#drop-section"
-                  className="px-8 py-4 bg-white text-[#111111] hover:bg-neutral-200 text-xs font-mono uppercase tracking-widest font-bold rounded-lg transition-all duration-200 shadow-xl flex items-center gap-2 cursor-pointer active:scale-95"
-                >
-                  <span>Shop The Drop</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                  {/* Pill Buttons */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <Link
+                      href="/shop"
+                      className="px-7 sm:px-8 py-3 bg-white text-[#111111] hover:bg-neutral-100 text-xs sm:text-sm font-semibold rounded-full transition-all shadow-md active:scale-95 cursor-pointer font-sans"
+                    >
+                      Shop Now
+                    </Link>
 
-                <Link
-                  href="/upcoming"
-                  className="px-8 py-4 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-neutral-700 text-white text-xs font-mono uppercase tracking-widest font-medium rounded-lg transition-all duration-200 flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Launch Calendar</span>
-                </Link>
+                    <Link
+                      href="/shop?filter=exclusive"
+                      className="px-7 sm:px-8 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white text-xs sm:text-sm font-medium rounded-full transition-all active:scale-95 cursor-pointer font-sans"
+                    >
+                      Women&apos;s Exclusive
+                    </Link>
+                  </div>
+                </div>
 
-                <a
-                  href="#manifesto"
-                  className="px-5 py-4 text-neutral-300 hover:text-white text-xs font-mono uppercase tracking-wider underline underline-offset-4 cursor-pointer"
-                >
-                  The Manifesto &darr;
-                </a>
+                {/* Right Column: "You're gonna need a bigger closet" */}
+                <div className="lg:col-span-5 flex flex-col justify-end lg:items-end text-left lg:text-right space-y-3">
+                  <div className="bg-white/90 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-5 lg:p-0 rounded-xl lg:rounded-none border lg:border-none border-black/5 max-w-md">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-[0.92] text-[#111111] font-sans">
+                      You&apos;re<br />
+                      gonna<br />
+                      need a<br />
+                      bigger<br />
+                      closet
+                    </h1>
+
+                    <p className="text-xs sm:text-[13px] text-[#2E1E19]/80 leading-relaxed font-sans font-normal pt-3 max-w-sm ml-auto">
+                      The Fall/Winter wardrobe everyone wants. Our warmest collection yet. The fits took us all year. Layers, textures, everyday essentials. Good luck choosing. We made countless versions before these. Back for the cold.
+                    </p>
+                  </div>
+                </div>
+
               </div>
+
             </div>
           </div>
-
-          {/* Bottom Hero Running Tape */}
-          <DropMarquee
-            items={[
-              'DROP 04: MIDNIGHT RUN',
-              'BY CREATIVES FOR CREATIVES',
-              '500 GSM FRENCH TERRY',
-              'WORLDWIDE EXPRESS SHIPPING',
-              'PRE-SHRUNK FABRICS',
-              'NO FAST FASHION',
-              'STRICTLY LIMITED PIECES',
-            ]}
-            speed="fast"
-            inverted={true}
-            border={false}
-          />
         </section>
+
 
         {/* =========================================================================
             2. THE LATEST DROP (Streetwear Grid with Filter Tabs & Quick Add)
