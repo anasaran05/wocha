@@ -149,7 +149,7 @@ export function CartDrawer() {
             </div>
 
             <p className="text-[11px] text-[#6B6B6B]">
-              Shipping and taxes calculated at checkout. Free shipping on orders over $200.
+              Shipping and taxes calculated at checkout. Free shipping on orders over {formatPrice(200)}.
             </p>
 
             <div className="grid grid-cols-2 gap-2 pt-1">

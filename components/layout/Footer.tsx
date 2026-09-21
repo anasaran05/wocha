@@ -36,16 +36,16 @@ export function Footer() {
               />
             </Link>
             <p className="text-xs text-[#6B6B6B] leading-relaxed max-w-sm">
-              Heavyweight streetwear essentials made with premium cotton and comfortable relaxed fits. Built for everyday wear and long-lasting quality.
+              Comfortable everyday hoodies and t-shirts made with thick cotton and clean relaxed fits. Built to last wash after wash.
             </p>
 
             <div className="pt-4">
               <span className="text-[11px] font-mono text-[#111111] uppercase tracking-wider block mb-2">
-                Newsletter // Drop Updates
+                Get Updates on New Releases
               </span>
               {subscribed ? (
                 <p className="text-xs font-mono text-[#111111] bg-white p-2.5 hairline-border rounded-lg inline-block">
-                  You are subscribed! We will send you new drop updates.
+                  You are subscribed! We will send you new release updates.
                 </p>
               ) : (
                 <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm">
@@ -76,17 +76,17 @@ export function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/shop?category=hoodies" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
-                  Heavyweight Hoodies
+                  Hoodies
                 </Link>
               </li>
               <li>
                 <Link href="/shop?category=t-shirts" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
-                  Drop-Shoulder Tees
+                  T-Shirts
                 </Link>
               </li>
               <li>
                 <Link href="/upcoming" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
-                  Upcoming Drops
+                  New Releases
                 </Link>
               </li>
             </ul>
@@ -99,13 +99,19 @@ export function Footer() {
             </span>
             <ul className="space-y-2 text-xs">
               <li>
-                <span className="text-[#6B6B6B]">Our Fabrics</span>
+                <Link href="/about" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
+                  Our Story
+                </Link>
               </li>
               <li>
-                <span className="text-[#6B6B6B]">Sustainability</span>
+                <Link href="/about#quality" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
+                  How We Make Clothes
+                </Link>
               </li>
               <li>
-                <span className="text-[#6B6B6B]">Quality Guarantee</span>
+                <Link href="/about#quality" className="text-[#6B6B6B] hover:text-[#111111] transition-colors">
+                  30-Day Guarantee
+                </Link>
               </li>
             </ul>
           </div>

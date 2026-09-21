@@ -96,11 +96,6 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             <span className="bg-white/95 backdrop-blur-sm text-[#482922] text-[11px] font-sans font-medium px-2.5 py-0.5 rounded-full border border-[#D5D0C6] shadow-2xs">
               New In
             </span>
-            {product.weight && (
-              <span className="hidden sm:inline-block bg-[#EFECE6]/90 text-[#482922] text-[10px] font-mono px-2 py-0.5 rounded-full border border-[#E3DFD7]">
-                {product.weight}
-              </span>
-            )}
           </div>
 
           {/* Wishlist Button */}

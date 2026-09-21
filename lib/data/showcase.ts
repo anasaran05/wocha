@@ -1,27 +1,25 @@
 /**
- * WOCHA SHOWCASE & NEW LAUNCH RELEASES
- * 
- * Easily edit or add new products, images, names, and pricing below!
- * Supports INR (₹) and USD ($) pricing, plus auto-conversion for EUR/GBP.
+ * WOCHA SHOWCASE & THREE CORE COLLECTIONS:
+ * 1. Streetwear
+ * 2. Gym Wear
+ * 3. Normal Wear
  */
 
 export interface ShowcaseProduct {
   id: string;
   name: string;
-  category: 'drop-shoulder' | 'hoodies' | 'anime-prints' | 'acid-wash';
+  category: 'streetwear' | 'gym-wear' | 'normal-wear' | 'hoodies' | 't-shirts' | 'drop-shoulder' | 'anime-prints' | 'acid-wash';
+  collection: 'streetwear' | 'gym-wear' | 'normal-wear';
   categoryLabel: string;
-  /** Primary image URL. Paste your image link or local path here */
   image: string;
   hoverImage?: string;
-  /** Price in USD ($) */
   priceUSD: number;
-  /** Price in INR (₹) */
   priceINR: number;
   compareAtUSD?: number;
   compareAtINR?: number;
-  weight: string; // e.g. '280 GSM'
+  weight?: string;
   composition: string;
-  fit: string; // e.g. 'Oversized Drop-Shoulder'
+  fit: string;
   colors: { name: string; hex: string }[];
   sizes: string[];
   isNewRelease?: boolean;
@@ -32,61 +30,58 @@ export interface ShowcaseProduct {
 export interface ComingSoonProduct {
   id: string;
   name: string;
-  category: 'drop-shoulder' | 'hoodies' | 'anime-prints' | 'acid-wash';
+  category: 'streetwear' | 'gym-wear' | 'normal-wear' | 'drop-shoulder' | 'hoodies' | 'anime-prints' | 'acid-wash';
   categoryLabel: string;
   image: string;
-  launchWindow: string; // e.g. 'Drops Friday 8:00 PM'
+  launchWindow: string;
   estimatedPriceUSD: number;
   estimatedPriceINR: number;
-  weight: string; // e.g. '300 GSM Heavy Cotton'
+  weight?: string;
   fit: string;
   description: string;
   printTechnique?: string;
-  previewTag: string; // e.g. 'Limited Stock'
+  previewTag: string;
 }
 
 /* =========================================================================
-   AVAILABLE NOW (READY TO BUY & SHIP)
+   1. STREETWEAR COLLECTION
    ========================================================================= */
-export const AVAILABLE_SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
-  // 1. Drop-Shoulder Oversized Tee
+export const STREETWEAR_PRODUCTS: ShowcaseProduct[] = [
   {
-    id: 'ds-tee-01',
-    name: 'Heavyweight Drop-Shoulder T-Shirt',
-    category: 'drop-shoulder',
-    categoryLabel: 'Drop Shoulder',
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
-    hoverImage: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
-    priceUSD: 45,
-    priceINR: 2499,
-    compareAtUSD: 55,
-    compareAtINR: 2999,
-    weight: '280 GSM',
-    composition: '100% Heavy Combed Cotton',
-    fit: 'Relaxed Drop Shoulder',
+    id: 'sw-01',
+    name: 'Heavyweight Boxy Cotton Hoodie',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=80',
+    hoverImage: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 110,
+    priceINR: 5999,
+    compareAtUSD: 130,
+    compareAtINR: 6999,
+    composition: '100% Thick Cotton Fleece',
+    fit: 'Boxy Fit',
     colors: [
-      { name: 'Black', hex: '#121212' },
-      { name: 'Off-White', hex: '#F3F2EC' },
-      { name: 'Dark Grey', hex: '#3E424B' },
+      { name: 'Jet Black', hex: '#111111' },
+      { name: 'Bone White', hex: '#EBE9E1' },
+      { name: 'Brown', hex: '#8B4513' },
     ],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    sizes: ['S', 'M', 'L', 'XL'],
     isNewRelease: true,
     tag: 'Best Seller',
-    productSlug: 'tee-01',
+    productSlug: 'hoodie-01',
   },
-
-  // 2. Anime Graphic Back-Print Drop Shoulder
   {
-    id: 'anime-tee-01',
-    name: 'Phantom Ronin Anime Graphic T-Shirt',
-    category: 'anime-prints',
-    categoryLabel: 'Anime Prints',
+    id: 'sw-02',
+    name: 'Phantom Ronin Graphic T-Shirt',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
     image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1000&q=80',
     hoverImage: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1000&q=80',
     priceUSD: 52,
     priceINR: 2899,
-    weight: '290 GSM',
-    composition: '100% Bio-Washed Cotton',
+    composition: '100% Washed Soft Cotton',
     fit: 'Oversized Fit',
     colors: [
       { name: 'Washed Black', hex: '#1E1E20' },
@@ -97,89 +92,41 @@ export const AVAILABLE_SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     tag: 'New Drop',
     productSlug: 'tee-02',
   },
-
-  // 3. Heavyweight Boxy Loopback Hoodie
   {
-    id: 'hoodie-01',
-    name: 'Heavyweight Boxy Cotton Hoodie',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
-    image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=80',
-    hoverImage: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1000&q=80',
-    priceUSD: 110,
-    priceINR: 5999,
-    compareAtUSD: 130,
-    compareAtINR: 6999,
-    weight: '480 GSM',
-    composition: '100% Heavy French Terry Cotton',
-    fit: 'Boxy Fit',
-    colors: [
-      { name: 'Jet Black', hex: '#111111' },
-      { name: 'Bone White', hex: '#EBE9E1' },
-      { name: 'Brown', hex: '#8B4513' },
-    ],
-    sizes: ['S', 'M', 'L', 'XL'],
-    isNewRelease: true,
-    tag: 'Heavy Cotton',
-    productSlug: 'hoodie-01',
-  },
-
-  // 4. Cyberpunk Manga High-Density Graphic Tee
-  {
-    id: 'anime-tee-02',
-    name: 'Mecha Unit Anime Back-Print T-Shirt',
-    category: 'anime-prints',
-    categoryLabel: 'Anime Prints',
-    image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=1000&q=80',
-    hoverImage: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
-    priceUSD: 49,
-    priceINR: 2699,
-    weight: '270 GSM',
-    composition: '100% Pure Cotton',
+    id: 'sw-03',
+    name: 'Heavy Drop-Shoulder T-Shirt',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
+    hoverImage: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 45,
+    priceINR: 2499,
+    compareAtUSD: 55,
+    compareAtINR: 2999,
+    composition: '100% Combed Cotton',
     fit: 'Relaxed Drop Shoulder',
     colors: [
-      { name: 'Charcoal', hex: '#262626' },
-      { name: 'Off-White', hex: '#F4F2EB' },
+      { name: 'Black', hex: '#121212' },
+      { name: 'Off-White', hex: '#F3F2EC' },
+      { name: 'Dark Grey', hex: '#3E424B' },
     ],
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     isNewRelease: true,
-    tag: 'Limited Print',
-    productSlug: 'tee-03',
+    tag: 'Essential',
+    productSlug: 'tee-01',
   },
-
-  // 5. Thermal Zip Hoodie
   {
-    id: 'hoodie-02',
-    name: 'Heavy Thick Double-Zip Hoodie',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
-    image: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1000&q=80',
-    priceUSD: 125,
-    priceINR: 6799,
-    weight: '500 GSM',
-    composition: '100% Warm Loopback Cotton',
-    fit: 'Comfortable Boxy Fit',
-    colors: [
-      { name: 'Faded Black', hex: '#1C1C1E' },
-      { name: 'Warm Taupe', hex: '#A89F91' },
-    ],
-    sizes: ['M', 'L', 'XL'],
-    tag: 'Extra Warm',
-    productSlug: 'hoodie-02',
-  },
-
-  // 6. Mineral Distressed Drop-Shoulder Tee
-  {
-    id: 'ds-tee-02',
+    id: 'sw-04',
     name: 'Acid Wash Vintage Drop-Shoulder T-Shirt',
-    category: 'drop-shoulder',
-    categoryLabel: 'Drop Shoulder',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
     image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
     priceUSD: 48,
     priceINR: 2599,
-    weight: '280 GSM',
-    composition: '100% Washed Soft Cotton',
-    fit: 'Oversized Streetwear Fit',
+    composition: '100% Stonewashed Cotton',
+    fit: 'Oversized Streetwear Cut',
     colors: [
       { name: 'Acid Black', hex: '#2A2A2E' },
       { name: 'Moss Green', hex: '#4A5348' },
@@ -188,37 +135,454 @@ export const AVAILABLE_SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     tag: 'Acid Wash',
     productSlug: 'tee-04',
   },
+  {
+    id: 'sw-05',
+    name: 'Heavy Thick Double-Zip Hoodie',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 125,
+    priceINR: 6799,
+    composition: '100% Thick Fleece Cotton',
+    fit: 'Boxy Fit',
+    colors: [
+      { name: 'Faded Black', hex: '#1C1C1E' },
+      { name: 'Warm Taupe', hex: '#A89F91' },
+    ],
+    sizes: ['M', 'L', 'XL'],
+    tag: 'Silver Hardware',
+    productSlug: 'hoodie-02',
+  },
+  {
+    id: 'sw-06',
+    name: 'Mecha Unit Graphic T-Shirt',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 49,
+    priceINR: 2699,
+    composition: '100% Pure Cotton',
+    fit: 'Relaxed Drop Shoulder',
+    colors: [
+      { name: 'Charcoal', hex: '#262626' },
+      { name: 'Off-White', hex: '#F4F2EB' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Back Print',
+    productSlug: 'tee-03',
+  },
+  {
+    id: 'sw-07',
+    name: 'Cyber Samurai Oversized T-Shirt',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 54,
+    priceINR: 2999,
+    composition: '100% Heavy Cotton',
+    fit: 'Oversized Fit',
+    colors: [
+      { name: 'Black', hex: '#111111' },
+      { name: 'Vintage White', hex: '#EDE8E0' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Limited Edition',
+    productSlug: 'tee-01',
+  },
+  {
+    id: 'sw-08',
+    name: 'Mineral Wash Baggy Street Pants',
+    category: 'streetwear',
+    collection: 'streetwear',
+    categoryLabel: 'Streetwear',
+    image: 'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 85,
+    priceINR: 4499,
+    composition: '100% Heavy Cotton Twill',
+    fit: 'Baggy Street Cut',
+    colors: [
+      { name: 'Faded Charcoal', hex: '#333333' },
+      { name: 'Olive Drab', hex: '#4E5340' },
+    ],
+    sizes: ['30', '32', '34', '36'],
+    tag: 'Relaxed Cut',
+    productSlug: 'pants-01',
+  },
 ];
 
 /* =========================================================================
-   COMING SOON (LAUNCHING NEXT - NOTIFY ME)
+   2. GYM WEAR COLLECTION
    ========================================================================= */
+export const GYM_WEAR_PRODUCTS: ShowcaseProduct[] = [
+  {
+    id: 'gw-01',
+    name: 'Heavyweight Pump Cover Fleece Hoodie',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1578768079052-aa76e520028b?auto=format&fit=crop&w=1000&q=80',
+    hoverImage: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 98,
+    priceINR: 5299,
+    compareAtUSD: 115,
+    compareAtINR: 6199,
+    composition: '100% Breathable Heavy Cotton',
+    fit: 'Oversized Pump Cover',
+    colors: [
+      { name: 'Onyx Black', hex: '#111111' },
+      { name: 'Heather Grey', hex: '#A6A6A6' },
+      { name: 'Dark Olive', hex: '#3C4436' },
+    ],
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    isNewRelease: true,
+    tag: 'Gym Essential',
+    productSlug: 'gym-hoodie-01',
+  },
+  {
+    id: 'gw-02',
+    name: 'Oversized Heavy Athletic Training Tee',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=1000&q=80',
+    hoverImage: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 42,
+    priceINR: 2299,
+    composition: '100% Breathable Combed Cotton',
+    fit: 'Loose Workout Cut',
+    colors: [
+      { name: 'Jet Black', hex: '#151515' },
+      { name: 'Bone', hex: '#EAE6DF' },
+      { name: 'Steel Blue', hex: '#3C4A5B' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    isNewRelease: true,
+    tag: 'Popular',
+    productSlug: 'gym-tee-01',
+  },
+  {
+    id: 'gw-03',
+    name: 'Double-Layer Breathable Workout Shorts',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 48,
+    priceINR: 2599,
+    composition: 'Durable Quick-Dry Mesh & Cotton',
+    fit: 'Above-The-Knee Fit',
+    colors: [
+      { name: 'Solid Black', hex: '#111111' },
+      { name: 'Slate Grey', hex: '#5A5E65' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Sweat Wicking',
+    productSlug: 'gym-shorts-01',
+  },
+  {
+    id: 'gw-04',
+    name: 'Core Ribbed Athletic Training Tank',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 36,
+    priceINR: 1999,
+    composition: '95% Ribbed Cotton, 5% Elastane',
+    fit: 'Fitted Muscle Cut',
+    colors: [
+      { name: 'Black', hex: '#181818' },
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Army Green', hex: '#4B5320' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'High Stretch',
+    productSlug: 'gym-tank-01',
+  },
+  {
+    id: 'gw-05',
+    name: 'Heavy Fleece Tapered Workout Joggers',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 78,
+    priceINR: 4199,
+    composition: '100% Warm Pre-Washed Cotton',
+    fit: 'Tapered Ankle Fit',
+    colors: [
+      { name: 'Dark Charcoal', hex: '#2B2B2B' },
+      { name: 'Muted Olive', hex: '#40453B' },
+      { name: 'Black', hex: '#111111' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Zipper Pockets',
+    productSlug: 'gym-jogger-01',
+  },
+  {
+    id: 'gw-06',
+    name: 'Drop-Armhole Raw Cutoff Gym Tank',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 38,
+    priceINR: 2099,
+    composition: '100% Washed Soft Cotton',
+    fit: 'Deep Drop Cut',
+    colors: [
+      { name: 'Slate Grey', hex: '#4F535B' },
+      { name: 'Off-Black', hex: '#1C1C1E' },
+    ],
+    sizes: ['M', 'L', 'XL'],
+    tag: 'Breathable',
+    productSlug: 'gym-cutoff-01',
+  },
+  {
+    id: 'gw-07',
+    name: 'Athletic Long-Sleeve Compression Top',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 46,
+    priceINR: 2499,
+    composition: '88% Poly, 12% Spandex',
+    fit: 'Compression Fit',
+    colors: [
+      { name: 'Matte Black', hex: '#121212' },
+      { name: 'Carbon Grey', hex: '#393C42' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Quick Dry',
+    productSlug: 'gym-comp-01',
+  },
+  {
+    id: 'gw-08',
+    name: 'Heavy Gym Full-Zip Warmup Jacket',
+    category: 'gym-wear',
+    collection: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 105,
+    priceINR: 5699,
+    composition: '100% Cotton Fleece',
+    fit: 'Regular Athletic Fit',
+    colors: [
+      { name: 'Vintage Ash', hex: '#9E9E9E' },
+      { name: 'Dark Navy', hex: '#1B2430' },
+    ],
+    sizes: ['M', 'L', 'XL'],
+    tag: 'Warmup Gear',
+    productSlug: 'gym-jacket-01',
+  },
+];
+
+/* =========================================================================
+   3. NORMAL WEAR COLLECTION (EVERYDAY ESSENTIALS)
+   ========================================================================= */
+export const NORMAL_WEAR_PRODUCTS: ShowcaseProduct[] = [
+  {
+    id: 'nw-01',
+    name: 'Clean 100% Cotton Heavy Blank Tee',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
+    hoverImage: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 38,
+    priceINR: 1999,
+    compareAtUSD: 48,
+    compareAtINR: 2499,
+    composition: '100% Pure Combed Cotton',
+    fit: 'Classic Regular Fit',
+    colors: [
+      { name: 'Pure White', hex: '#FFFFFF' },
+      { name: 'Pitch Black', hex: '#111111' },
+      { name: 'Oatmeal', hex: '#E6E1DA' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    isNewRelease: true,
+    tag: 'Everyday Essential',
+    productSlug: 'normal-tee-01',
+  },
+  {
+    id: 'nw-02',
+    name: 'Classic Relaxed Crewneck Sweatshirt',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 85,
+    priceINR: 4499,
+    composition: '100% Soft Loopback Cotton',
+    fit: 'Relaxed Fit',
+    colors: [
+      { name: 'Heather Grey', hex: '#B0B0B0' },
+      { name: 'Dark Navy', hex: '#1A2238' },
+      { name: 'Forest Green', hex: '#2D3E33' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    isNewRelease: true,
+    tag: 'Best Seller',
+    productSlug: 'normal-crew-01',
+  },
+  {
+    id: 'nw-03',
+    name: 'Relaxed Fit Straight-Leg Chino Pants',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 79,
+    priceINR: 4299,
+    composition: '100% Sturdy Cotton Twill',
+    fit: 'Straight Leg Casual Cut',
+    colors: [
+      { name: 'Khaki Sand', hex: '#C2B69D' },
+      { name: 'Dark Navy', hex: '#1F2430' },
+      { name: 'Olive', hex: '#4B5320' },
+    ],
+    sizes: ['30', '32', '34', '36'],
+    tag: 'All-Day Wear',
+    productSlug: 'normal-pants-01',
+  },
+  {
+    id: 'nw-04',
+    name: 'Everyday Heavyweight Pocket T-Shirt',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 40,
+    priceINR: 2199,
+    composition: '100% Soft Combed Cotton',
+    fit: 'Regular Daily Fit',
+    colors: [
+      { name: 'Washed Sage', hex: '#7A8B7B' },
+      { name: 'Charcoal', hex: '#2E2E32' },
+      { name: 'White', hex: '#FDFDFD' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Front Pocket',
+    productSlug: 'normal-pocket-01',
+  },
+  {
+    id: 'nw-05',
+    name: 'Relaxed Button-Up Cotton Overshirt',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 89,
+    priceINR: 4799,
+    composition: '100% Durable Cotton Canvas',
+    fit: 'Layering Overshirt',
+    colors: [
+      { name: 'Washed Tan', hex: '#A89279' },
+      { name: 'Denim Blue', hex: '#3B5998' },
+      { name: 'Black', hex: '#161616' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Layering Piece',
+    productSlug: 'normal-shirt-01',
+  },
+  {
+    id: 'nw-06',
+    name: 'Classic Ribbed Long-Sleeve T-Shirt',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 46,
+    priceINR: 2499,
+    composition: '100% Combed Cotton',
+    fit: 'Standard Fit',
+    colors: [
+      { name: 'Chalk White', hex: '#EBE9E1' },
+      { name: 'Dark Heather', hex: '#404040' },
+      { name: 'Black', hex: '#111111' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Ribbed Cuffs',
+    productSlug: 'normal-longsleeve-01',
+  },
+  {
+    id: 'nw-07',
+    name: 'Minimalist Everyday Casual Shorts',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 45,
+    priceINR: 2399,
+    composition: '100% Cotton Twill with Elastic Waist',
+    fit: 'Casual Easy Fit',
+    colors: [
+      { name: 'Warm Beige', hex: '#D6C7B2' },
+      { name: 'Faded Black', hex: '#222222' },
+      { name: 'Navy', hex: '#1B2430' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Drawstring Waist',
+    productSlug: 'normal-shorts-01',
+  },
+  {
+    id: 'nw-08',
+    name: 'Everyday Light Canvas Work Jacket',
+    category: 'normal-wear',
+    collection: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1000&q=80',
+    priceUSD: 115,
+    priceINR: 6199,
+    composition: '100% Sturdy Cotton Canvas',
+    fit: 'Boxy Casual Cut',
+    colors: [
+      { name: 'Muted Sand', hex: '#C2B092' },
+      { name: 'Olive', hex: '#3E4437' },
+      { name: 'Charcoal', hex: '#2B2C30' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    tag: 'Outerwear',
+    productSlug: 'normal-jacket-01',
+  },
+];
+
+/* Combined catalog for all items view */
+export const AVAILABLE_SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
+  ...STREETWEAR_PRODUCTS,
+  ...GYM_WEAR_PRODUCTS,
+  ...NORMAL_WEAR_PRODUCTS,
+];
+
 export const COMING_SOON_PRODUCTS: ComingSoonProduct[] = [
   {
     id: 'cs-01',
-    name: 'Cyber Samurai Back-Print Oversized T-Shirt',
-    category: 'anime-prints',
-    categoryLabel: 'Anime Prints',
+    name: 'Cyber Samurai Graphic Oversized T-Shirt',
+    category: 'streetwear',
+    categoryLabel: 'Streetwear',
     image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1000&q=80',
     launchWindow: 'Friday, 8:00 PM',
     estimatedPriceUSD: 54,
     estimatedPriceINR: 2999,
-    weight: '300 GSM Heavy Cotton',
     fit: 'Oversized Drop-Shoulder',
-    description: 'Detailed colorful back graphic print on heavy 300 GSM cotton. Super soft feel that will not crack or peel in the wash.',
+    description: 'Detailed colorful back graphic print on heavy cotton. Super soft feel that will not crack or peel in the wash.',
     printTechnique: 'High-Density Screenprint',
     previewTag: 'Only 150 Made',
   },
   {
     id: 'cs-02',
-    name: 'Super-Heavy Warm Pullover Hoodie',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
+    name: 'Super-Warm Fleece Pullover Hoodie',
+    category: 'streetwear',
+    categoryLabel: 'Streetwear',
     image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1000&q=80',
     launchWindow: 'Coming Next Week',
     estimatedPriceUSD: 135,
     estimatedPriceINR: 7499,
-    weight: '520 GSM Extra-Thick Fleece',
     fit: 'Roomy Relaxed Fit',
     description: 'Our thickest and warmest hoodie yet. Double stitched along all seams with extra strong cuffs and waist.',
     printTechnique: 'Clean Minimal Front Stitch',
@@ -226,32 +590,30 @@ export const COMING_SOON_PRODUCTS: ComingSoonProduct[] = [
   },
   {
     id: 'cs-03',
-    name: 'Sun-Faded Vintage Wash Drop-Shoulder T-Shirt',
-    category: 'drop-shoulder',
-    categoryLabel: 'Drop Shoulder',
-    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1000&q=80',
+    name: 'Sun-Faded Vintage Wash Workout Tee',
+    category: 'gym-wear',
+    categoryLabel: 'Gym Wear',
+    image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=1000&q=80',
     launchWindow: 'Coming Soon',
     estimatedPriceUSD: 49,
     estimatedPriceINR: 2699,
-    weight: '280 GSM Soft Washed Cotton',
-    fit: 'Drop-Shoulder Fit',
+    fit: 'Athletic Cut',
     description: 'Washed with natural minerals to give it a worn-in vintage look and an ultra-soft feel right out of the box.',
     printTechnique: 'Vintage Mineral Wash',
     previewTag: 'Limited Edition',
   },
   {
     id: 'cs-04',
-    name: 'Spirit Demon Sleeve-Print Graphic T-Shirt',
-    category: 'anime-prints',
-    categoryLabel: 'Anime Prints',
-    image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=1000&q=80',
+    name: 'Everyday Relaxed Button Overshirt',
+    category: 'normal-wear',
+    categoryLabel: 'Normal Wear',
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1000&q=80',
     launchWindow: 'End of This Month',
-    estimatedPriceUSD: 52,
-    estimatedPriceINR: 2899,
-    weight: '280 GSM Cotton',
-    fit: 'Relaxed Drop-Shoulder',
-    description: 'Clean anime art down the sleeve and along the back with subtle reflective details that catch the light.',
-    printTechnique: 'Reflective Screenprint',
+    estimatedPriceUSD: 85,
+    estimatedPriceINR: 4599,
+    fit: 'Relaxed Daily Fit',
+    description: 'Durable cotton canvas overshirt with double front chest pockets and reinforced horn buttons.',
+    printTechnique: 'Washed Canvas',
     previewTag: 'Early Access',
   },
 ];

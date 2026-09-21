@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/cart/store';
+import { useCurrencyStore } from '@/lib/currency/store';
 import { useAuth } from '@/lib/auth/auth';
 
 export default function CheckoutPage() {
   const { items, getSubtotal, getShippingCost, getTotal, promoCode, promoDiscount, clearCart } = useCartStore();
+  const { currency, formatPrice } = useCurrencyStore();
 
   const [mounted, setMounted] = useState(false);
   const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>('standard');
@@ -64,6 +66,7 @@ export default function CheckoutPage() {
             postalCode: formData.postalCode,
           },
           items,
+          currency,
           subtotal,
           discountTotal: discountAmount,
           shippingTotal: finalShipping,
@@ -330,7 +333,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <span className="text-xs font-mono text-[#111111]">
-                  {baseShipping === 0 ? 'Complimentary' : `$${baseShipping}`}
+                  {baseShipping === 0 ? 'Complimentary' : formatPrice(baseShipping)}
                 </span>
               </label>
 
@@ -354,7 +357,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <span className="text-xs font-mono text-[#111111]">
-                  ${baseShipping + 25}
+                  {formatPrice(baseShipping + 25)}
                 </span>
               </label>
             </div>
@@ -377,7 +380,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   readOnly
-                  value="4242 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4242"
+                  value="4242 •••• •••• 4242"
                   className="w-full bg-white hairline-border rounded-md px-3 py-2 text-xs font-mono text-[#111111] focus:outline-none"
                 />
               </div>
@@ -409,9 +412,9 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full wocha-btn rounded-lg py-4 text-xs uppercase tracking-wider text-white disabled:opacity-50"
+            className="w-full wocha-btn rounded-lg py-4 text-xs uppercase tracking-wider text-white disabled:opacity-50 cursor-pointer"
           >
-            {isSubmitting ? 'Authorizing Mock Transaction...' : `Place Order &bull; $${grandTotal.toFixed(2)}`}
+            {isSubmitting ? 'Authorizing Mock Transaction...' : `Place Order • ${formatPrice(grandTotal)}`}
           </button>
         </form>
 
@@ -441,7 +444,7 @@ export default function CheckoutPage() {
                 <div className="flex-1 text-xs">
                   <div className="flex justify-between font-medium text-[#111111]">
                     <span className="line-clamp-1">{item.name}</span>
-                    <span className="font-mono ml-2">${item.price * item.quantity}</span>
+                    <span className="font-mono ml-2">{formatPrice(item.price * item.quantity)}</span>
                   </div>
                   <div className="text-[11px] font-mono text-[#6B6B6B] mt-0.5">
                     Qty: {item.quantity} &bull; {item.size} &bull; {item.color}
@@ -459,23 +462,23 @@ export default function CheckoutPage() {
           <div className="hairline-top pt-4 space-y-2 text-xs font-mono">
             <div className="flex justify-between text-[#6B6B6B]">
               <span>Subtotal</span>
-              <span className="text-[#111111]">${subtotal}</span>
+              <span className="text-[#111111]">{formatPrice(subtotal)}</span>
             </div>
             {promoDiscount > 0 && (
               <div className="flex justify-between text-[#B85C3E]">
                 <span>Promo Discount ({promoCode})</span>
-                <span>-${discountAmount.toFixed(2)}</span>
+                <span>-{formatPrice(discountAmount)}</span>
               </div>
             )}
             <div className="flex justify-between text-[#6B6B6B]">
               <span>Shipping ({deliveryMethod})</span>
               <span className="text-[#111111]">
-                {finalShipping === 0 ? 'Complimentary' : `$${finalShipping}`}
+                {finalShipping === 0 ? 'Complimentary' : formatPrice(finalShipping)}
               </span>
             </div>
             <div className="hairline-top pt-3 flex justify-between items-baseline text-sm font-semibold">
               <span className="uppercase text-[#111111]">Total Charged</span>
-              <span className="text-base text-[#111111] font-mono">${grandTotal.toFixed(2)}</span>
+              <span className="text-base text-[#111111] font-mono">{formatPrice(grandTotal)}</span>
             </div>
           </div>
         </div>

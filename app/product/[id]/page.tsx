@@ -9,6 +9,7 @@ import { ConfiguratorPanel } from '@/components/product/ConfiguratorPanel';
 import { ProductCard } from '@/components/shop/ProductCard';
 import { useCartStore } from '@/lib/cart/store';
 import { useWishlistStore } from '@/lib/wishlist/store';
+import { useCurrencyStore } from '@/lib/currency/store';
 import { useAuth } from '@/lib/auth/auth';
 import { getReviewsForProduct, submitReview, ProductReview } from '@/lib/data/reviews';
 import { Heart, Star, CheckCircle, MessageSquare } from 'lucide-react';
@@ -30,6 +31,7 @@ export default function ProductDetailPage() {
 
   // Reviews & Wishlist state
   const { user } = useAuth();
+  const { formatPrice } = useCurrencyStore();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
   const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [reviewRating, setReviewRating] = useState(5);
@@ -165,8 +167,13 @@ export default function ProductDetailPage() {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
               {product.name}
             </h1>
-            <div className="pt-2 text-xl font-mono font-medium text-[#111111]">
-              ${product.price}
+            <div className="pt-2 flex items-center gap-3 text-xl font-mono font-medium text-[#111111]">
+              <span>{formatPrice(product.price)}</span>
+              {product.compareAtPrice && product.compareAtPrice > product.price && (
+                <span className="text-sm font-normal text-[#999999] line-through">
+                  {formatPrice(product.compareAtPrice)}
+                </span>
+              )}
             </div>
           </div>
 

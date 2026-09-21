@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { User, Heart, ShoppingBag, Search, X, Menu } from 'lucide-react';
 import { useCartStore } from '@/lib/cart/store';
@@ -48,84 +49,97 @@ export function Navbar() {
           1. TOP RUNNING TICKER / ANNOUNCEMENT BAR (Exact Nude Project Tone)
           ========================================================================= */}
       <div className="w-full bg-[#EFECE6] border-b border-[#E3DFD7] overflow-hidden py-1.5 select-none">
-        <div className="flex w-max animate-marquee duration-[32s]">
-          {[1, 2, 3, 4, 5, 6].map((idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
-            >
-              <span>30 days Easy Returns & Exchanges</span>
-              <span className="text-[#482922]/50 font-bold">&middot;</span>
-              <span>No extra fees on US orders - Taxes & Duties Included</span>
-              <span className="text-[#482922]/50 font-bold">&middot;</span>
-            </div>
-          ))}
+        <div className="flex w-max">
+          {/* Track 1 */}
+          <div className="flex shrink-0 items-center animate-marquee">
+            {[1, 2, 3].map((idx) => (
+              <div
+                key={`track1-${idx}`}
+                className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
+              >
+                <span>Free Express Shipping Across India</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span>30 Days Easy Returns &amp; Exchanges</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span>Taxes &amp; Duties Included</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+              </div>
+            ))}
+          </div>
+          {/* Track 2 (infinite clone) */}
+          <div className="flex shrink-0 items-center animate-marquee" aria-hidden="true">
+            {[1, 2, 3].map((idx) => (
+              <div
+                key={`track2-${idx}`}
+                className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
+              >
+                <span>Free Express Shipping Across India</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span>30 Days Easy Returns &amp; Exchanges</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span>Taxes &amp; Duties Included</span>
+                <span className="text-[#482922]/50 font-bold">&middot;</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* =========================================================================
           2. MAIN HEADER NAVIGATION BAR
           ========================================================================= */}
-      <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#EDEAE3] transition-all">
+      <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#EDEAE3] transition-all relative">
         <div className="max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-10 h-16 sm:h-[66px] flex items-center justify-between">
           
-          {/* LEFT GROUP: Logo + Shop & New In */}
-          <div className="flex items-center gap-6 sm:gap-8 lg:gap-10">
-            {/* Logo */}
+          {/* LEFT: Logo */}
+          <div className="flex items-center">
             <Link
               href="/"
-              className="flex items-center group cursor-pointer select-none"
-              aria-label="Wocha Project Home"
+              className="flex items-center group cursor-pointer select-none hover:opacity-85 transition-opacity"
+              aria-label="WOCHA Home"
             >
-              <span className="text-[21px] sm:text-[23px] font-black tracking-tight text-[#482922] transition-opacity group-hover:opacity-85 font-sans flex items-baseline">
-                Wocha<sup className="text-[10px] font-extrabold ml-0.5 relative -top-2">®</sup>
-                <span className="font-bold ml-1">Project</span>
-              </span>
+              <Image
+                src="/wocha.png"
+                alt="WOCHA"
+                width={140}
+                height={34}
+                priority
+                className="h-7 sm:h-8 w-auto object-contain"
+              />
             </Link>
-
-            {/* Left Nav Links: Shop & New In */}
-            <nav className="hidden md:flex items-center gap-5 sm:gap-6 text-[14px] text-[#482922] font-medium tracking-tight">
-              <Link
-                href="/shop"
-                className={`transition-colors hover:text-black ${
-                  pathname === '/shop' ? 'font-semibold text-black' : ''
-                }`}
-              >
-                Shop
-              </Link>
-              <Link
-                href="/shop?filter=new"
-                className="transition-colors hover:text-black"
-              >
-                New In
-              </Link>
-            </nav>
           </div>
 
-          {/* CENTER GROUP: Collections, Wocha Members, Stores */}
-          <nav className="hidden lg:flex items-center gap-7 sm:gap-8 text-[14px] text-[#482922] font-medium tracking-tight">
+          {/* CENTER: Category Nav Links (Streetwear, Gym Wear, Normal Wear, New In) */}
+          <nav className="hidden md:flex items-center gap-7 sm:gap-8 lg:gap-10 text-[14px] text-[#482922] font-medium tracking-tight absolute left-1/2 -translate-x-1/2">
             <Link
-              href="/shop"
-              className="transition-colors hover:text-black"
+              href="/shop?category=streetwear"
+              className="transition-colors hover:text-black font-semibold"
             >
-              Collections
+              Streetwear
             </Link>
             <Link
-              href="/upcoming"
-              className="transition-colors hover:text-black"
+              href="/shop?category=gym-wear"
+              className="transition-colors hover:text-black font-semibold"
             >
-              Wocha Members
+              Gym Wear
             </Link>
             <Link
-              href="/shop?view=stores"
+              href="/shop?category=normal-wear"
+              className="transition-colors hover:text-black font-semibold"
+            >
+              Normal Wear
+            </Link>
+            <Link
+              href="/shop?filter=new"
               className="transition-colors hover:text-black"
             >
-              Stores
+              New In
             </Link>
           </nav>
 
           {/* RIGHT GROUP: Search ▮, Account, Wishlist, Bag */}
           <div className="flex items-center gap-4 sm:gap-6 text-[14px] text-[#482922]">
+
             {/* Search ▮ */}
             <button
               type="button"
@@ -179,7 +193,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1 hover:text-black transition-colors"
+              className="md:hidden p-1 hover:text-black transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -218,7 +232,7 @@ export function Navbar() {
             4. MOBILE DRAWER MENU
             ========================================================================= */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-[#EDEAE3] px-6 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden bg-white border-t border-[#EDEAE3] px-6 py-6 space-y-5 animate-in slide-in-from-top-2 duration-200">
             {/* Mobile Search Input */}
             <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 pb-3 border-b border-[#EDEAE3]">
               <Search className="w-4 h-4 text-[#482922]/60" />
@@ -233,11 +247,25 @@ export function Navbar() {
 
             <nav className="flex flex-col space-y-3.5 text-[15px] font-medium text-[#482922]">
               <Link
-                href="/shop"
+                href="/shop?category=streetwear"
                 onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-black"
+                className="hover:text-black font-semibold"
               >
-                Shop All
+                Streetwear
+              </Link>
+              <Link
+                href="/shop?category=gym-wear"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black font-semibold"
+              >
+                Gym Wear
+              </Link>
+              <Link
+                href="/shop?category=normal-wear"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-black font-semibold"
+              >
+                Normal Wear
               </Link>
               <Link
                 href="/shop?filter=new"
@@ -245,27 +273,6 @@ export function Navbar() {
                 className="hover:text-black"
               >
                 New In
-              </Link>
-              <Link
-                href="/shop"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-black"
-              >
-                Collections
-              </Link>
-              <Link
-                href="/upcoming"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-black"
-              >
-                Wocha Members
-              </Link>
-              <Link
-                href="/shop?view=stores"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-black"
-              >
-                Stores
               </Link>
             </nav>
 

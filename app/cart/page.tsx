@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/cart/store';
+import { useCurrencyStore } from '@/lib/currency/store';
 
 export default function CartPage() {
   const {
@@ -18,6 +19,7 @@ export default function CartPage() {
     promoDiscount,
     applyPromo,
   } = useCartStore();
+  const { formatPrice } = useCurrencyStore();
 
   const [mounted, setMounted] = useState(false);
   const [inputCode, setInputCode] = useState('');
@@ -122,14 +124,14 @@ export default function CartPage() {
                       {item.name}
                     </Link>
                     <span className="text-sm font-mono font-medium text-[#111111] ml-4">
-                      ${item.price * item.quantity}
+                      {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap gap-4 text-xs font-mono text-[#6B6B6B] mt-1.5">
                     <span>Size: <strong className="text-[#111111]">{item.size}</strong></span>
                     <span>Color: <strong className="text-[#111111]">{item.color}</strong></span>
-                    <span>Unit: ${item.price}</span>
+                    <span>Unit: {formatPrice(item.price)}</span>
                   </div>
 
                   {/* Customization Details */}
@@ -195,32 +197,32 @@ export default function CartPage() {
           <div className="space-y-3 text-xs font-mono">
             <div className="flex justify-between text-[#6B6B6B]">
               <span>Subtotal</span>
-              <span className="text-[#111111]">${subtotal}</span>
+              <span className="text-[#111111]">{formatPrice(subtotal)}</span>
             </div>
 
             {promoDiscount > 0 && (
               <div className="flex justify-between text-[#B85C3E]">
                 <span>Promo Code ({promoCode})</span>
-                <span>-${discountAmount.toFixed(2)}</span>
+                <span>-{formatPrice(discountAmount)}</span>
               </div>
             )}
 
             <div className="flex justify-between text-[#6B6B6B]">
               <span>Standard Courier</span>
               <span className="text-[#111111]">
-                {shipping === 0 ? 'Complimentary' : `$${shipping}`}
+                {shipping === 0 ? 'Complimentary' : formatPrice(shipping)}
               </span>
             </div>
 
             {subtotal < 200 && (
               <p className="text-[11px] text-[#6B6B6B] font-sans">
-                Add ${(200 - subtotal).toFixed(0)} more to unlock complimentary global shipping.
+                Add {formatPrice(Math.max(0, 200 - subtotal))} more to unlock complimentary global shipping.
               </p>
             )}
 
             <div className="hairline-top pt-4 flex justify-between items-baseline text-sm font-semibold">
               <span className="text-[#111111] uppercase tracking-wide">Estimated Total</span>
-              <span className="text-base text-[#111111] font-mono">${total.toFixed(2)}</span>
+              <span className="text-base text-[#111111] font-mono">{formatPrice(total)}</span>
             </div>
           </div>
 
@@ -261,7 +263,7 @@ export default function CartPage() {
               href="/checkout"
               className="w-full wocha-btn rounded-lg py-3.5 text-xs uppercase tracking-wider text-center text-white block"
             >
-              Proceed to Checkout &bull; ${total.toFixed(2)}
+              Proceed to Checkout &bull; {formatPrice(total)}
             </Link>
             <Link
               href="/shop"

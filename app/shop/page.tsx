@@ -22,6 +22,10 @@ function ShopContent() {
     if (cat) {
       setCategory(cat);
     }
+    const filter = searchParams.get('filter');
+    if (filter === 'new') {
+      setSortBy('newest');
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -48,14 +52,34 @@ function ShopContent() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Page Header */}
       <div className="space-y-2">
-        <span className="text-xs font-mono uppercase tracking-widest text-[#6B6B6B] block">
-          All Products
-        </span>
+       
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111111]">
-          T-Shirts, Hoodies & Drop-Shoulders
+          {searchParams.get('filter') === 'new'
+            ? 'New In'
+            : category === 'streetwear'
+            ? 'Streetwear Collection'
+            : category === 'gym-wear'
+            ? 'Gym Wear Collection'
+            : category === 'normal-wear'
+            ? 'Normal Wear Collection'
+            : category === 'hoodies'
+            ? 'Heavyweight Hoodies'
+            : category === 't-shirts'
+            ? 'T-Shirts & Tops'
+            : category === 'puffers'
+            ? 'Jackets & Outerwear'
+            : 'All Collections'}
         </h1>
         <p className="text-xs sm:text-sm text-[#6B6B6B] max-w-xl">
-          High quality heavyweight cotton, relaxed fits, and clean streetwear essentials made to wear every day.
+          {searchParams.get('filter') === 'new'
+            ? 'The latest releases, freshly dropped silhouettes, and new arrivals.'
+            : category === 'streetwear'
+            ? 'Oversized cuts, heavyweight cotton, and clean streetwear essentials.'
+            : category === 'gym-wear'
+            ? 'Breathable stretch fabrics, athletic fits, and comfortable training apparel.'
+            : category === 'normal-wear'
+            ? 'Everyday basics, soft cotton tees, and timeless pieces made for daily comfort.'
+            : 'Explore our complete collection of streetwear, gym wear, and everyday essentials.'}
         </p>
       </div>
 

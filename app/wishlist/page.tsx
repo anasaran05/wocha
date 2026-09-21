@@ -5,11 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useWishlistStore } from '@/lib/wishlist/store';
 import { useCartStore } from '@/lib/cart/store';
+import { useCurrencyStore } from '@/lib/currency/store';
 import { Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlistStore();
   const { addItem } = useCartStore();
+  const { formatPrice } = useCurrencyStore();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function WishlistPage() {
   if (!mounted) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-24 text-center font-mono text-xs text-[#6B6B6B]">
-        Loading Curated Wishlist...
+        Loading Wishlist...
       </div>
     );
   }
@@ -28,13 +30,13 @@ export default function WishlistPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       <div className="space-y-2">
         <span className="text-xs font-mono uppercase tracking-widest text-[#6B6B6B] block">
-          Personal Archive
+          Favorites
         </span>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111111]">
-          Saved Garments & Form Studies
+          Saved Items
         </h1>
         <p className="text-xs sm:text-sm text-[#6B6B6B] max-w-xl">
-          Retained silhouettes for prioritized checkout and atelier customization reservation.
+          Items you have saved to shop later or easily add to your bag.
         </p>
       </div>
 
@@ -75,8 +77,8 @@ export default function WishlistPage() {
                       {item.name}
                     </h3>
                   </Link>
-                  <span className="font-mono text-xs font-medium text-[#111111] block mt-1">
-                    €{item.price}
+                  <span className="font-mono text-xs font-semibold text-[#111111] block mt-1">
+                    {formatPrice(item.price)}
                   </span>
                 </div>
 

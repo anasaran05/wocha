@@ -1,6 +1,19 @@
 import { getAssetUrl } from '../storage';
+import {
+  STREETWEAR_PRODUCTS,
+  GYM_WEAR_PRODUCTS,
+  NORMAL_WEAR_PRODUCTS,
+  ShowcaseProduct,
+} from './showcase';
 
-export type ProductCategory = 'hoodies' | 't-shirts' | 'puffers' | 'customizable';
+export type ProductCategory =
+  | 'streetwear'
+  | 'gym-wear'
+  | 'normal-wear'
+  | 'hoodies'
+  | 't-shirts'
+  | 'puffers'
+  | 'customizable';
 
 export interface ProductColor {
   name: string;
@@ -35,7 +48,34 @@ export interface Product {
   defaultCustomization?: CustomizationOption;
 }
 
+function mapShowcaseToProduct(p: ShowcaseProduct): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    category: p.collection as ProductCategory,
+    categoryLabel: p.categoryLabel,
+    price: p.priceUSD,
+    compareAtPrice: p.compareAtUSD,
+    sizes: p.sizes,
+    colors: p.colors,
+    images: p.hoverImage ? [p.image, p.hoverImage] : [p.image],
+    description: `${p.fit} with clean craftsmanship. Made from ${p.composition}.`,
+    details: [p.composition, p.fit, p.tag || 'WOCHA Core Piece'],
+    composition: p.composition,
+    weight: p.weight || 'Heavyweight',
+    isNew: p.isNewRelease,
+    onSale: Boolean(p.compareAtUSD && p.compareAtUSD > p.priceUSD),
+  };
+}
+
+const SHOWCASE_MOCK_PRODUCTS: Product[] = [
+  ...STREETWEAR_PRODUCTS.map(mapShowcaseToProduct),
+  ...GYM_WEAR_PRODUCTS.map(mapShowcaseToProduct),
+  ...NORMAL_WEAR_PRODUCTS.map(mapShowcaseToProduct),
+];
+
 export const MOCK_PRODUCTS: Product[] = [
+  ...SHOWCASE_MOCK_PRODUCTS,
   // --- HOODIES ---
   {
     id: 'hoodie-01',
@@ -538,11 +578,13 @@ export async function getFeaturedProducts(): Promise<Product[]> {
  */
 export function getCategories() {
   return [
-    { id: 'all', label: 'All Silhouettes', count: MOCK_PRODUCTS.length },
+    { id: 'all', label: 'All Items', count: MOCK_PRODUCTS.length },
+    { id: 'streetwear', label: 'Streetwear', count: MOCK_PRODUCTS.filter((p) => p.category === 'streetwear').length },
+    { id: 'gym-wear', label: 'Gym Wear', count: MOCK_PRODUCTS.filter((p) => p.category === 'gym-wear').length },
+    { id: 'normal-wear', label: 'Normal Wear', count: MOCK_PRODUCTS.filter((p) => p.category === 'normal-wear').length },
     { id: 'hoodies', label: 'Hoodies', count: MOCK_PRODUCTS.filter((p) => p.category === 'hoodies').length },
     { id: 't-shirts', label: 'T-Shirts', count: MOCK_PRODUCTS.filter((p) => p.category === 't-shirts').length },
-    { id: 'puffers', label: 'Puffers', count: MOCK_PRODUCTS.filter((p) => p.category === 'puffers').length },
-    { id: 'customizable', label: 'Custom Studio', count: MOCK_PRODUCTS.filter((p) => p.category === 'customizable').length },
+    { id: 'puffers', label: 'Jackets', count: MOCK_PRODUCTS.filter((p) => p.category === 'puffers').length },
   ];
 }
 
