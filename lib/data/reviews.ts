@@ -1,5 +1,4 @@
 import { getSupabaseClient } from '../supabase/client';
-import { getSupabaseAdminClient } from '../supabase/admin';
 
 export interface ProductReview {
   id: string;
@@ -43,7 +42,13 @@ const MOCK_REVIEWS: Record<string, ProductReview[]> = {
   ],
 };
 
+export function getReviewsSync(productId: string): ProductReview[] {
+  return MOCK_REVIEWS[productId] || [];
+}
+
 export async function getReviewsForProduct(productId: string): Promise<ProductReview[]> {
+  const local = getReviewsSync(productId);
+  if (local && local.length > 0) return local;
   try {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
@@ -138,6 +143,7 @@ export async function submitReview(input: {
 
 export async function getPendingReviews(): Promise<ProductReview[]> {
   try {
+    const { getSupabaseAdminClient } = await import('../supabase/admin');
     const supabase = getSupabaseAdminClient();
     const { data, error } = await supabase
       .from('reviews')
@@ -179,6 +185,7 @@ export async function getPendingReviews(): Promise<ProductReview[]> {
 
 export async function moderateReview(reviewId: string, status: 'approved' | 'rejected') {
   try {
+    const { getSupabaseAdminClient } = await import('../supabase/admin');
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from('reviews')

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { Heart, ChevronLeft, ChevronRight, Eye, X, Check } from 'lucide-react';
+import { Heart, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
 import { ShowcaseProduct } from '@/lib/data/showcase';
 import { useCartStore } from '@/lib/cart/store';
 import { useWishlistStore } from '@/lib/wishlist/store';
@@ -19,6 +19,7 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
   const { formatPrice } = useCurrencyStore();
 
   const [selectedSize, setSelectedSize] = useState<string>('M');
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [justAdded, setJustAdded] = useState<boolean>(false);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
@@ -82,13 +83,14 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
     e.preventDefault();
     e.stopPropagation();
 
+    setSelectedSize(size);
     addItem({
       productId: product.id,
       name: product.name,
       price: product.priceUSD,
       image: productImages[0] || product.image,
       size: size,
-      color: product.colors[0]?.name || 'Standard',
+      color: product.colors[selectedColorIndex]?.name || product.colors[0]?.name || 'Standard',
       quantity: 1,
     });
 
@@ -146,7 +148,7 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <Link href={targetUrl} className="absolute inset-0 block cursor-pointer">
+          <Link href={targetUrl} prefetch={true} className="absolute inset-0 block cursor-pointer">
             <img
               src={currentImg}
               alt={`${product.name} - view ${activeImageIndex + 1}`}
@@ -155,26 +157,27 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             />
           </Link>
 
-          {/* Top Badges (Minimalist Nude Project style: plain text stacked) */}
-          <div className="absolute top-3 left-3 flex flex-col gap-0.5 items-start pointer-events-none z-10">
-            <span className="text-[11px] font-sans font-medium text-[#111111] tracking-tight">
-              {product.tag || 'New In'}
+          {/* Top Left Tag / Badge - Distinctive WOCHA frosted pill */}
+          <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 pointer-events-none z-10 max-w-[85%]">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-black/10 text-[10px] font-mono font-medium uppercase tracking-wider text-[#111111] shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0" />
+              {product.tag || (product.isNewRelease ? 'NEW RELEASE' : 'STUDIO')}
             </span>
-            {product.isNewRelease && (
-              <span className="text-[10px] font-sans text-[#777777] tracking-tight">
-                Most Wanted
+            {product.isNewRelease && product.tag && (
+              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-900/90 backdrop-blur-md text-white text-[9px] font-mono tracking-wider uppercase font-semibold">
+                HOT
               </span>
             )}
           </div>
 
-          {/* Top Right: Sleek Wire Heart Icon */}
+          {/* Top Right: Sleek Frosted Wishlist Roundel */}
           <button
             type="button"
             onClick={handleToggleWishlist}
             aria-label="Toggle wishlist"
-            className="absolute top-2.5 right-2.5 z-10 p-1 text-[#111111] hover:scale-110 transition-transform cursor-pointer"
+            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/85 backdrop-blur-md border border-black/5 flex items-center justify-center text-[#111111] hover:bg-white hover:scale-110 transition-all cursor-pointer shadow-xs active:scale-95"
           >
-            <Heart className={`w-4 h-4 stroke-[1.5] ${isLiked ? 'fill-[#111111] text-[#111111]' : 'text-[#111111]'}`} />
+            <Heart className={`w-3.5 h-3.5 stroke-[1.75] ${isLiked ? 'fill-[#111111] text-[#111111]' : 'text-[#111111]'}`} />
           </button>
 
           {/* Left & Right Arrow Controls to cycle images one by one */}
@@ -200,50 +203,93 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             </>
           )}
 
-          {/* Eye Icon for Quick Lightbox (appears on hover) */}
-          {hasMultipleImages && (
-            <button
-              type="button"
-              onClick={handleOpenGallery}
-              aria-label="View all angles"
-              title="View all angles"
-              className="absolute bottom-2.5 right-2.5 z-10 w-6 h-6 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#111111] opacity-0 group-hover:opacity-100 transition-opacity shadow-xs cursor-pointer hover:bg-black hover:text-white"
-            >
-              <Eye className="w-3 h-3" />
-            </button>
-          )}
+          {/* Size Buttons (Minimal floating capsule on hover, smaller buttons without text) */}
+          <div
+            className={`absolute bottom-2.5 inset-x-0 flex justify-center z-10 transition-all duration-300 pointer-events-auto ${
+              isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1.5 pointer-events-none'
+            }`}
+          >
+            <div className="inline-flex items-center gap-1 p-1 rounded-md bg-white/95 backdrop-blur-md border border-black/10 shadow-sm">
+              {(product.sizes || ['S', 'M', 'L', 'XL']).map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={(e) => handleQuickAdd(e, size)}
+                  aria-label={`Select size ${size}`}
+                  className={`h-5 min-w-[22px] px-1 text-[9px] font-mono font-medium rounded transition-all cursor-pointer ${
+                    justAdded && selectedSize === size
+                      ? 'bg-black text-white'
+                      : 'text-neutral-700 hover:bg-black hover:text-white bg-neutral-100/70'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Minimalist Product Information (Directly beneath image, matching Nude Project reference) */}
-        <div className="pt-2.5 pb-3.5 px-3 flex flex-col space-y-1 bg-white">
-          <Link href={targetUrl} className="hover:opacity-75 transition-opacity">
-            <h3 className="text-xs sm:text-[13px] font-normal text-[#111111] line-clamp-1 leading-snug">
+        {/* Distinctive WOCHA Product Information */}
+        <div className="pt-2.5 pb-3 px-3 flex flex-col space-y-1.5 bg-white">
+          {/* Fit & Specs Ticker */}
+          <div className="flex items-center justify-between gap-1 text-[9.5px] font-mono uppercase tracking-[0.14em] text-neutral-400">
+            <span className="truncate">{product.fit || 'Oversized Fit'}</span>
+            {product.weight && <span className="shrink-0">{product.weight}</span>}
+          </div>
+
+          {/* Product Title */}
+          <Link href={targetUrl} prefetch={true} className="group/title block">
+            <h3 className="text-[13px] font-medium text-[#111111] line-clamp-1 leading-snug group-hover/title:text-neutral-500 transition-colors">
               {product.name}
             </h3>
           </Link>
 
-          <div className="flex items-baseline gap-2">
-            <span className="text-xs font-mono text-[#111111]">
-              {formatPrice(product.priceUSD)}
-            </span>
+          {/* Price & Discount Indicator */}
+          <div className="flex items-center justify-between pt-0.5">
+            <div className="flex items-baseline gap-2">
+              <span className="text-xs sm:text-[13px] font-mono font-semibold text-[#111111]">
+                {formatPrice(product.priceUSD, { INR: product.priceINR })}
+              </span>
+              {product.compareAtUSD && (
+                <span className="text-[11px] text-neutral-400 line-through font-mono">
+                  {formatPrice(product.compareAtUSD, product.compareAtINR ? { INR: product.compareAtINR } : undefined)}
+                </span>
+              )}
+            </div>
             {product.compareAtUSD && (
-              <span className="text-[11px] text-[#999999] line-through font-mono">
-                {formatPrice(product.compareAtUSD)}
+              <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-xs bg-[#111111]/5 text-[#111111] font-medium tracking-tight">
+                SALE
               </span>
             )}
           </div>
 
-          {/* Color swatches */}
+          {/* Interactive Circular Color Selector */}
           {product.colors && product.colors.length > 0 && (
-            <div className="flex items-center gap-1.5 pt-1">
-              {product.colors.map((c, i) => (
-                <span
-                  key={i}
-                  title={c.name}
-                  className="w-2.5 h-2.5 rounded-2xs border border-black/20 shrink-0 inline-block"
-                  style={{ backgroundColor: c.hex }}
-                />
-              ))}
+            <div className="flex items-center justify-between pt-1.5 border-t border-neutral-100/90">
+              <div className="flex items-center gap-1.5">
+                {product.colors.map((c, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedColorIndex(i);
+                    }}
+                    title={c.name}
+                    aria-label={`Select color ${c.name}`}
+                    className={`w-3.5 h-3.5 rounded-full border border-black/15 transition-all cursor-pointer relative ${
+                      selectedColorIndex === i
+                        ? 'ring-2 ring-black ring-offset-1 scale-110'
+                        : 'hover:scale-110 opacity-75 hover:opacity-100'
+                    }`}
+                    style={{ backgroundColor: c.hex }}
+                  />
+                ))}
+              </div>
+              <span className="text-[10px] font-mono text-neutral-500 tracking-tight">
+                {product.colors[selectedColorIndex]?.name || `${product.colors.length} shades`}
+              </span>
             </div>
           )}
         </div>

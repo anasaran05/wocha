@@ -32,11 +32,14 @@ export interface CustomizationOption {
 
 export interface Product {
   id: string;
+  slug?: string;
   name: string;
   category: ProductCategory;
   categoryLabel: string;
   price: number;
   compareAtPrice?: number;
+  priceINR?: number;
+  compareAtINR?: number;
   sizes: string[];
   colors: ProductColor[];
   images: string[];
@@ -51,20 +54,33 @@ export interface Product {
 }
 
 function mapShowcaseToProduct(p: ShowcaseProduct): Product {
+  const images = p.images && p.images.length > 0
+    ? p.images
+    : (p.hoverImage ? [p.image, p.hoverImage] : [p.image]);
+
   return {
     id: p.id,
+    slug: p.productSlug || p.id,
     name: p.name,
     category: p.collection as ProductCategory,
     categoryLabel: p.categoryLabel,
     price: p.priceUSD,
     compareAtPrice: p.compareAtUSD,
+    priceINR: p.priceINR,
+    compareAtINR: p.compareAtINR,
     sizes: p.sizes,
     colors: p.colors,
-    images: p.images && p.images.length > 0 ? p.images : (p.hoverImage ? [p.image, p.hoverImage] : [p.image]),
-    description: `${p.fit} with clean craftsmanship. Made from ${p.composition}.`,
-    details: [p.composition, p.fit, p.tag || 'WOCHA Core Piece'],
+    images: images,
+    description: `${p.fit} tailored with heavyweight craftsmanship. Made from ${p.composition}. Designed for long-lasting silhouette structure and all-day comfort.`,
+    details: [
+      p.composition,
+      p.fit,
+      p.tag ? `Edition: ${p.tag}` : 'WOCHA Core Piece',
+      'High-density screenprint artwork with zero-crack finish',
+      'Pre-shrunk fabric treatment to prevent washing shrinkage',
+    ],
     composition: p.composition,
-    weight: p.weight || 'Heavyweight',
+    weight: p.weight || '280 GSM Heavyweight',
     isNew: p.isNewRelease,
     onSale: Boolean(p.compareAtUSD && p.compareAtUSD > p.priceUSD),
   };
@@ -518,9 +534,52 @@ export async function getProducts(filter?: ProductFilter): Promise<Product[]> {
 }
 
 /**
+ * Synchronously fetch a product by ID or Slug from local memory (instant 0ms lookup).
+ */
+export function getProductSync(id: string): Product | undefined {
+  if (!id) return undefined;
+  const cleanId = decodeURIComponent(id).trim().toLowerCase();
+
+  return (
+    MOCK_PRODUCTS.find(
+      (p) =>
+        p.id.toLowerCase() === cleanId ||
+        p.slug?.toLowerCase() === cleanId ||
+        p.id === id ||
+        p.slug === id
+    ) ||
+    SHOWCASE_MOCK_PRODUCTS.find(
+      (p) =>
+        p.id.toLowerCase() === cleanId ||
+        p.slug?.toLowerCase() === cleanId ||
+        p.id === id ||
+        p.slug === id
+    )
+  );
+}
+
+/**
+ * Synchronously fetch related products from local memory (instant 0ms lookup).
+ */
+export function getRelatedProductsSync(category: string, currentId: string, currentSlug?: string): Product[] {
+  return MOCK_PRODUCTS
+    .filter(
+      (p) =>
+        p.id !== currentId &&
+        (!currentSlug || p.slug !== currentSlug) &&
+        (p.category === category || p.isNew)
+    )
+    .slice(0, 4);
+}
+
+/**
  * Fetch a single product by ID or Slug.
  */
 export async function getProductById(id: string): Promise<Product | undefined> {
+  const localMatch = getProductSync(id);
+  if (localMatch) return localMatch;
+
+  // Fallback to Supabase if not found in local mock data
   try {
     const { getSupabaseClient } = await import('../supabase/client');
     const supabase = getSupabaseClient();
@@ -544,6 +603,7 @@ export async function getProductById(id: string): Promise<Product | undefined> {
 
       return {
         id: data.id,
+        slug: (data as any).slug || data.id,
         name: data.name,
         category: catSlug,
         categoryLabel: data.categories?.name || 'Garment',
@@ -562,10 +622,10 @@ export async function getProductById(id: string): Promise<Product | undefined> {
       };
     }
   } catch {
-    // Fallback
+    // Graceful fallback
   }
 
-  return MOCK_PRODUCTS.find((p) => p.id === id || p.id === id.toLowerCase());
+  return undefined;
 }
 
 /**

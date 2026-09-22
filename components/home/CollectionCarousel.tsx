@@ -97,14 +97,14 @@ export function CollectionCarousel({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Floating Navigation Controls Inside the Strip */}
+        {/* Floating Navigation Controls Outer Edge */}
         {maxIndex > 0 && (
           <>
             <button
               type="button"
               onClick={handlePrev}
               aria-label="Previous products"
-              className="absolute left-2 sm:left-3 top-1/3 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-80 sm:opacity-0 sm:group-hover/carousel:opacity-100"
+              className="absolute left-0 -translate-x-1/2 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -113,7 +113,7 @@ export function CollectionCarousel({
               type="button"
               onClick={handleNext}
               aria-label="Next products"
-              className="absolute right-2 sm:right-3 top-1/3 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-80 sm:opacity-0 sm:group-hover/carousel:opacity-100"
+              className="absolute right-0 translate-x-1/2 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, notFound } from 'next/navigation';
-import { getProductById, getProducts, Product, CustomizationOption } from '@/lib/data/products';
+import { getProductById, getProductSync, getRelatedProductsSync, Product, CustomizationOption } from '@/lib/data/products';
 import { ConfiguratorPanel } from '@/components/product/ConfiguratorPanel';
 import { ProductCard } from '@/components/shop/ProductCard';
 import { useCartStore } from '@/lib/cart/store';
 import { useWishlistStore } from '@/lib/wishlist/store';
 import { useCurrencyStore } from '@/lib/currency/store';
 import { useAuth } from '@/lib/auth/auth';
-import { getReviewsForProduct, submitReview, ProductReview } from '@/lib/data/reviews';
+import { getReviewsForProduct, getReviewsSync, submitReview, ProductReview } from '@/lib/data/reviews';
 import { Heart, Star, CheckCircle, MessageSquare } from 'lucide-react';
 
 export default function ProductDetailPage() {
@@ -19,21 +19,30 @@ export default function ProductDetailPage() {
   const rawId = routeParams?.id;
   const productId = (Array.isArray(rawId) ? rawId[0] : rawId) || '';
 
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Instant synchronous local resolution (0ms - no DB delay)
+  const initialProduct = productId ? getProductSync(productId) : null;
+
+  const [product, setProduct] = useState<Product | null>(initialProduct || null);
+  const [loading, setLoading] = useState<boolean>(!initialProduct);
   const [selectedImage, setSelectedImage] = useState<number>(0);
-  const [selectedSize, setSelectedSize] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedSize, setSelectedSize] = useState<string>(() => initialProduct?.sizes[0] || 'M');
+  const [selectedColor, setSelectedColor] = useState<string>(() => initialProduct?.colors[0]?.name || '');
   const [quantity, setQuantity] = useState<number>(1);
-  const [customization, setCustomization] = useState<CustomizationOption | undefined>(undefined);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [customization, setCustomization] = useState<CustomizationOption | undefined>(() =>
+    initialProduct?.customizable ? initialProduct.defaultCustomization : undefined
+  );
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>(() =>
+    initialProduct ? getRelatedProductsSync(initialProduct.category, initialProduct.id, initialProduct.slug) : []
+  );
   const [addedToast, setAddedToast] = useState(false);
 
   // Reviews & Wishlist state
   const { user } = useAuth();
   const { formatPrice } = useCurrencyStore();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
-  const [reviews, setReviews] = useState<ProductReview[]>([]);
+  const [reviews, setReviews] = useState<ProductReview[]>(() =>
+    initialProduct ? getReviewsSync(initialProduct.id) : []
+  );
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewTitle, setReviewTitle] = useState('');
   const [reviewBody, setReviewBody] = useState('');
@@ -44,31 +53,42 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (!productId) return;
-    async function load() {
+
+    // Instant sync lookup on route switch
+    const found = getProductSync(productId);
+    if (found) {
+      setProduct(found);
+      setSelectedImage(0);
+      setSelectedSize(found.sizes[0] || 'M');
+      setSelectedColor(found.colors[0]?.name || '');
+      if (found.customizable && found.defaultCustomization) {
+        setCustomization(found.defaultCustomization);
+      }
+      setRelatedProducts(getRelatedProductsSync(found.category, found.id, found.slug));
+      setReviews(getReviewsSync(found.id));
+      setLoading(false);
+      return;
+    }
+
+    // Async fallback only if item wasn't in memory
+    async function loadFallback() {
       setLoading(true);
       const item = await getProductById(productId);
       if (item) {
         setProduct(item);
-        setSelectedSize(item.sizes[0] || '');
+        setSelectedImage(0);
+        setSelectedSize(item.sizes[0] || 'M');
         setSelectedColor(item.colors[0]?.name || '');
         if (item.customizable && item.defaultCustomization) {
           setCustomization(item.defaultCustomization);
         }
-
-        // Fetch related products
-        const all = await getProducts();
-        const related = all
-          .filter((p) => p.id !== item.id && (p.category === item.category || p.isNew))
-          .slice(0, 4);
-        setRelatedProducts(related);
-
-        // Fetch verified reviews
+        setRelatedProducts(getRelatedProductsSync(item.category, item.id, item.slug));
         const revs = await getReviewsForProduct(item.id);
         setReviews(revs);
       }
       setLoading(false);
     }
-    load();
+    loadFallback();
   }, [productId]);
 
   if (loading) {
@@ -121,6 +141,7 @@ export default function ProductDetailPage() {
               alt={product.name}
               fill
               priority
+              unoptimized
               sizes="(max-width: 1024px) 100vw, 60vw"
               className="object-cover object-center"
             />
@@ -133,12 +154,12 @@ export default function ProductDetailPage() {
 
           {/* Thumbnail Strip */}
           {product.images.length > 1 && (
-            <div className="flex gap-3">
+            <div className="flex gap-3 overflow-x-auto pb-2">
               {product.images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
-                  className={`relative w-20 aspect-square bg-[#F5F4EF] hairline-border rounded-lg overflow-hidden cursor-pointer transition-all ${
+                  className={`relative w-20 aspect-square bg-[#F5F4EF] hairline-border rounded-lg overflow-hidden shrink-0 cursor-pointer transition-all ${
                     selectedImage === idx ? 'ring-1 ring-[#111111] border-[#111111]' : 'opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -146,6 +167,7 @@ export default function ProductDetailPage() {
                     src={img}
                     alt={`${product.name} ${idx}`}
                     fill
+                    unoptimized
                     sizes="80px"
                     className="object-cover object-center"
                   />
@@ -168,10 +190,12 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
             <div className="pt-2 flex items-center gap-3 text-xl font-mono font-medium text-[#111111]">
-              <span>{formatPrice(product.price)}</span>
+              <span>
+                {formatPrice(product.price, product.priceINR ? { INR: product.priceINR } : undefined)}
+              </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
                 <span className="text-sm font-normal text-[#999999] line-through">
-                  {formatPrice(product.compareAtPrice)}
+                  {formatPrice(product.compareAtPrice, product.compareAtINR ? { INR: product.compareAtINR } : undefined)}
                 </span>
               )}
             </div>
@@ -277,7 +301,7 @@ export default function ProductDetailPage() {
                 onClick={handleAddToCart}
                 className="flex-1 wocha-btn rounded-lg h-11 text-xs uppercase tracking-wider text-white"
               >
-                {product.customizable ? 'Add Bespoke Garment to Bag' : 'Add to Bag'} &bull; ${product.price * quantity}
+                {product.customizable ? 'Add Bespoke Garment to Bag' : 'Add to Bag'} &bull; {formatPrice(product.price * quantity, product.priceINR ? { INR: product.priceINR * quantity } : undefined)}
               </button>
 
               {/* Wishlist toggle */}
