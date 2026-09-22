@@ -122,3 +122,60 @@ body {
   animation: marquee linear infinite reverse;
 }
 
+/* =========================================================================
+   LUXURY PAGE LANDING ENTRANCE & REVEAL ANIMATIONS
+   ========================================================================= */
+@keyframes landingHeroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.975);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes landingCardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landingFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-landing-hero {
+  animation: landingHeroEntrance 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-landing-fade {
+  animation: landingFadeIn 0.8s ease-out both;
+}
+
+.animate-landing-card {
+  animation: landingCardEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered landing delays for carousel cards */
+.stagger-delay-0 { animation-delay: 150ms; }
+.stagger-delay-1 { animation-delay: 260ms; }
+.stagger-delay-2 { animation-delay: 370ms; }
+.stagger-delay-3 { animation-delay: 480ms; }
+.stagger-delay-4 { animation-delay: 590ms; }
+.stagger-delay-5 { animation-delay: 700ms; }
+
+

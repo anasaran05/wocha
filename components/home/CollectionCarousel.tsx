@@ -10,12 +10,14 @@ interface CollectionCarouselProps {
   categorySlug?: string;
   products: ShowcaseProduct[];
   autoplayIntervalMs?: number; // default 4500ms (4.5s)
+  animateEntry?: boolean;
 }
 
 export function CollectionCarousel({
   categorySlug,
   products,
   autoplayIntervalMs = 4500,
+  animateEntry = false,
 }: CollectionCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -127,7 +129,11 @@ export function CollectionCarousel({
             {products.map((product, idx) => (
               <div
                 key={product.id}
-                className="w-1/2 md:w-1/3 lg:w-1/5 shrink-0 px-1.5 sm:px-2.5"
+                className={`w-1/2 md:w-1/3 lg:w-1/5 shrink-0 px-1.5 sm:px-2.5 ${
+                  animateEntry && idx < 6
+                    ? `animate-landing-card stagger-delay-${idx}`
+                    : ''
+                }`}
               >
                 <StreetProductCard product={product} index={idx} />
               </div>
