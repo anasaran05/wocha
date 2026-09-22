@@ -51,7 +51,7 @@ export function Navbar() {
       <div className="w-full bg-[#0A0A0A] border-b border-[#1A1A1A] overflow-hidden py-2 select-none">
         <div className="flex w-max group">
           {/* Track 1 */}
-          <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]">
+          <div className="flex shrink-0 items-center animate-marquee-slow group-hover:[animation-play-state:paused]">
             {[1, 2, 3].map((idx) => (
               <div
                 key={`track1-${idx}`}
@@ -69,7 +69,7 @@ export function Navbar() {
             ))}
           </div>
           {/* Track 2 (infinite clone) */}
-          <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]" aria-hidden="true">
+          <div className="flex shrink-0 items-center animate-marquee-slow group-hover:[animation-play-state:paused]" aria-hidden="true">
             {[1, 2, 3].map((idx) => (
               <div
                 key={`track2-${idx}`}
