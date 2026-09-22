@@ -10,9 +10,7 @@ import { ProductCard } from '@/components/shop/ProductCard';
 import { useCartStore } from '@/lib/cart/store';
 import { useWishlistStore } from '@/lib/wishlist/store';
 import { useCurrencyStore } from '@/lib/currency/store';
-import { useAuth } from '@/lib/auth/auth';
-import { getReviewsForProduct, getReviewsSync, submitReview, ProductReview } from '@/lib/data/reviews';
-import { Heart, Star, CheckCircle, MessageSquare } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export default function ProductDetailPage() {
   const routeParams = useParams();
@@ -36,18 +34,9 @@ export default function ProductDetailPage() {
   );
   const [addedToast, setAddedToast] = useState(false);
 
-  // Reviews & Wishlist state
-  const { user } = useAuth();
+  // Wishlist state
   const { formatPrice } = useCurrencyStore();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
-  const [reviews, setReviews] = useState<ProductReview[]>(() =>
-    initialProduct ? getReviewsSync(initialProduct.id) : []
-  );
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviewTitle, setReviewTitle] = useState('');
-  const [reviewBody, setReviewBody] = useState('');
-  const [submittingReview, setSubmittingReview] = useState(false);
-  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   const { addItem } = useCartStore();
 
@@ -65,7 +54,6 @@ export default function ProductDetailPage() {
         setCustomization(found.defaultCustomization);
       }
       setRelatedProducts(getRelatedProductsSync(found.category, found.id, found.slug));
-      setReviews(getReviewsSync(found.id));
       setLoading(false);
       return;
     }
@@ -83,8 +71,6 @@ export default function ProductDetailPage() {
           setCustomization(item.defaultCustomization);
         }
         setRelatedProducts(getRelatedProductsSync(item.category, item.id, item.slug));
-        const revs = await getReviewsForProduct(item.id);
-        setReviews(revs);
       }
       setLoading(false);
     }
@@ -371,135 +357,7 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      {/* Verified Reviews Section */}
-      <div className="hairline-top pt-16 space-y-8">
-        <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4">
-          <div>
-            <span className="text-[11px] font-mono text-[#6B6B6B] uppercase tracking-widest block">
-              Patron Testimonials
-            </span>
-            <h2 className="text-2xl font-bold tracking-tight text-[#111111]">
-              Verified Atelier Reviews
-            </h2>
-          </div>
-          <div className="flex items-center gap-2 font-mono text-xs text-[#111111]">
-            <div className="flex items-center text-amber-500">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} className="w-3.5 h-3.5 fill-current" />
-              ))}
-            </div>
-            <span>5.0 ({reviews.length} evaluations)</span>
-          </div>
-        </div>
 
-        {/* Reviews List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {reviews.map((rev) => (
-            <div key={rev.id} className="bg-white hairline-border rounded-xl p-6 space-y-3">
-              <div className="flex justify-between items-start">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-amber-500">
-                    {Array.from({ length: rev.rating }).map((_, idx) => (
-                      <Star key={idx} className="w-3 h-3 fill-current" />
-                    ))}
-                  </div>
-                  <h4 className="text-sm font-semibold text-[#111111]">{rev.title}</h4>
-                </div>
-                {rev.isVerifiedPurchase && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                    <CheckCircle className="w-3 h-3" />
-                    Verified Buyer
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-[#6B6B6B] leading-relaxed">{rev.body}</p>
-              <div className="text-[11px] font-mono text-[#6B6B6B] pt-2 hairline-top flex justify-between">
-                <span>{rev.userName}</span>
-                <span>{new Date(rev.createdAt).toLocaleDateString()}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Review Submission Form */}
-        <div className="bg-[#FAFAF8] hairline-border rounded-xl p-6 space-y-4 max-w-xl">
-          <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-[#111111]" />
-            <h4 className="text-xs font-mono uppercase tracking-wider text-[#111111]">
-              Submit Patron Feedback
-            </h4>
-          </div>
-
-          {reviewSubmitted ? (
-            <div className="p-4 bg-white hairline-border rounded-lg text-xs font-mono text-emerald-700">
-              Thank you. Your evaluation has been submitted to the atelier moderation queue.
-            </div>
-          ) : (
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                setSubmittingReview(true);
-                await submitReview({
-                  productId: product.id,
-                  userId: user?.id || 'guest',
-                  rating: reviewRating,
-                  title: reviewTitle,
-                  body: reviewBody,
-                });
-                setSubmittingReview(false);
-                setReviewSubmitted(true);
-              }}
-              className="space-y-3"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono text-[#6B6B6B]">Rating:</span>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setReviewRating(s)}
-                      className="p-1 cursor-pointer"
-                    >
-                      <Star
-                        className={`w-4 h-4 ${
-                          s <= reviewRating ? 'text-amber-500 fill-current' : 'text-[#D1CFC7]'
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <input
-                type="text"
-                placeholder="Review Headline (e.g. Architectural Boxy Cut)"
-                required
-                value={reviewTitle}
-                onChange={(e) => setReviewTitle(e.target.value)}
-                className="w-full bg-white hairline-border rounded-lg px-3 py-2 text-xs focus:outline-none"
-              />
-
-              <textarea
-                placeholder="Describe material drape, fit proportions, and textile quality..."
-                required
-                rows={3}
-                value={reviewBody}
-                onChange={(e) => setReviewBody(e.target.value)}
-                className="w-full bg-white hairline-border rounded-lg px-3 py-2 text-xs focus:outline-none"
-              />
-
-              <button
-                type="submit"
-                disabled={submittingReview}
-                className="wocha-btn rounded-lg px-4 py-2 text-xs uppercase tracking-wider text-white"
-              >
-                {submittingReview ? 'Submitting...' : 'Post Evaluation'}
-              </button>
-            </form>
-          )}
-        </div>
-      </div>
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
