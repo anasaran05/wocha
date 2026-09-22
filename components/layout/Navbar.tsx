@@ -46,39 +46,43 @@ export function Navbar() {
   return (
     <div className="sticky top-0 z-50 w-full bg-white">
       {/* =========================================================================
-          1. TOP RUNNING TICKER / ANNOUNCEMENT BAR (Exact Nude Project Tone)
+          1. TOP RUNNING TICKER / ANNOUNCEMENT BAR (Sleek Dark Streetwear)
           ========================================================================= */}
-      <div className="w-full bg-[#EFECE6] border-b border-[#E3DFD7] overflow-hidden py-1.5 select-none">
-        <div className="flex w-max">
+      <div className="w-full bg-[#0A0A0A] border-b border-[#1A1A1A] overflow-hidden py-2 select-none">
+        <div className="flex w-max group">
           {/* Track 1 */}
-          <div className="flex shrink-0 items-center animate-marquee">
+          <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]">
             {[1, 2, 3].map((idx) => (
               <div
                 key={`track1-${idx}`}
-                className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
+                className="flex items-center gap-7 px-4 shrink-0 font-sans uppercase text-[10.5px] sm:text-[11.5px] text-[#F3F3F3] font-medium tracking-[0.16em]"
               >
                 <span>Free Express Shipping Across India</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
-                <span>30 Days Easy Returns &amp; Exchanges</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
-                <span>Taxes &amp; Duties Included</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>COD Available</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>30 Days Easy Returns</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>100% Organic Heavyweight Cotton</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
               </div>
             ))}
           </div>
           {/* Track 2 (infinite clone) */}
-          <div className="flex shrink-0 items-center animate-marquee" aria-hidden="true">
+          <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]" aria-hidden="true">
             {[1, 2, 3].map((idx) => (
               <div
                 key={`track2-${idx}`}
-                className="flex items-center gap-6 px-4 shrink-0 font-sans text-[11px] sm:text-[12px] text-[#482922] font-normal tracking-tight"
+                className="flex items-center gap-7 px-4 shrink-0 font-sans uppercase text-[10.5px] sm:text-[11.5px] text-[#F3F3F3] font-medium tracking-[0.16em]"
               >
                 <span>Free Express Shipping Across India</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
-                <span>30 Days Easy Returns &amp; Exchanges</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
-                <span>Taxes &amp; Duties Included</span>
-                <span className="text-[#482922]/50 font-bold">&middot;</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>COD Available</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>30 Days Easy Returns</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
+                <span>100% Organic Heavyweight Cotton</span>
+                <span className="text-white/40 text-[10px] select-none">✦</span>
               </div>
             ))}
           </div>
@@ -124,10 +128,10 @@ export function Navbar() {
               Gym Wear
             </Link>
             <Link
-              href="/shop?category=normal-wear"
+              href="/shop?category=winter-wear"
               className="transition-colors hover:text-black font-semibold"
             >
-              Normal Wear
+              Winter Wear
             </Link>
             <Link
               href="/shop?filter=new"
@@ -261,11 +265,11 @@ export function Navbar() {
                 Gym Wear
               </Link>
               <Link
-                href="/shop?category=normal-wear"
+                href="/shop?category=winter-wear"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-black font-semibold"
               >
-                Normal Wear
+                Winter Wear
               </Link>
               <Link
                 href="/shop?filter=new"

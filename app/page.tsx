@@ -6,6 +6,7 @@ import { CheckCircle2 } from 'lucide-react';
 import {
   STREETWEAR_PRODUCTS,
   GYM_WEAR_PRODUCTS,
+  WINTER_WEAR_PRODUCTS,
   NORMAL_WEAR_PRODUCTS,
 } from '@/lib/data/showcase';
 import { CollectionCarousel } from '@/components/home/CollectionCarousel';
@@ -94,52 +95,25 @@ export default function HomePage() {
           COLLECTION 1: STREETWEAR
           ========================================================================= */}
       <section className="relative w-full bg-white border-b border-[#EDEAE3]">
-        <div className="max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-6">
-          {/* Streetwear Billboard Banner */}
-          <div className="relative w-full h-[62vh] min-h-[480px] max-h-[720px] rounded-2xl overflow-hidden bg-[#E9EBEA] flex flex-col justify-end p-6 sm:p-10 lg:p-14 shadow-xs">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-              <img
-                src="/hero-nude.jpg"
-                alt="WOCHA Streetwear Collection"
-                className="w-full h-full object-cover object-[center_18%] sm:object-[center_20%] lg:object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent lg:from-black/45 lg:via-transparent lg:to-transparent pointer-events-none" />
-            </div>
-
-            {/* Bottom Content & Buttons */}
-            <div className="relative z-10 space-y-3 sm:space-y-4 text-white max-w-xl">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md font-sans">
-                Streetwear
-              </h1>
-
-              {/* Action Buttons */}
-              <div className="flex flex-row flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
-                <Link
-                  href="/shop?category=streetwear"
-                  className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-[#111111] hover:bg-neutral-100 text-xs sm:text-sm font-semibold rounded-full transition-all shadow-md active:scale-95 cursor-pointer font-sans"
-                >
-                  Shop Streetwear
-                </Link>
-
-                <Link
-                  href="/shop"
-                  className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white text-xs sm:text-sm font-medium rounded-full transition-all active:scale-95 cursor-pointer font-sans"
-                >
-                  View All
-                </Link>
-              </div>
-            </div>
+        {/* Full-size Banner Image (Unobstructed, full size top, bottom, and both sides) */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 pt-4 sm:pt-6">
+          <div className="w-full overflow-hidden rounded-2xl bg-[#E9EBEA] shadow-xs">
+            <img
+              src="/hero-nude.jpg"
+              alt="WOCHA Streetwear Collection"
+              className="w-full h-auto object-contain block"
+            />
           </div>
         </div>
 
-        {/* Streetwear Moving Product Strip */}
-        <CollectionCarousel
-          title="Streetwear"
-          categorySlug="streetwear"
-          products={STREETWEAR_PRODUCTS}
-          autoplayIntervalMs={4500}
-        />
+        {/* Continuous Product Strip */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10">
+          <CollectionCarousel
+            categorySlug="streetwear"
+            products={STREETWEAR_PRODUCTS}
+            autoplayIntervalMs={4500}
+          />
+        </div>
       </section>
 
 
@@ -147,91 +121,51 @@ export default function HomePage() {
           COLLECTION 2: GYM WEAR
           ========================================================================= */}
       <section className="relative w-full bg-white border-b border-[#EDEAE3] pt-6 sm:pt-10">
-        <div className="max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-6">
-          {/* Gym Wear Billboard Banner */}
-          <div className="relative w-full h-[55vh] min-h-[440px] max-h-[620px] rounded-2xl overflow-hidden bg-[#161616] flex flex-col justify-end p-6 sm:p-10 lg:p-14 shadow-xs">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-              <img
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=2000&q=80"
-                alt="WOCHA Gym Wear Collection"
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent pointer-events-none" />
-            </div>
-
-            {/* Bottom Content & Buttons */}
-            <div className="relative z-10 space-y-3 sm:space-y-4 text-white max-w-xl">
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md font-sans">
-                Gym Wear
-              </h2>
-
-              {/* Action Buttons */}
-              <div className="flex flex-row flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
-                <Link
-                  href="/shop?category=gym-wear"
-                  className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-[#111111] hover:bg-neutral-100 text-xs sm:text-sm font-semibold rounded-full transition-all shadow-md active:scale-95 cursor-pointer font-sans"
-                >
-                  Shop Gym Wear
-                </Link>
-              </div>
-            </div>
+        {/* Full-size Banner Image (Unobstructed, full size top, bottom, and both sides) */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 pt-2 sm:pt-4">
+          <div className="w-full overflow-hidden rounded-2xl bg-[#161616] shadow-xs">
+            <img
+              src="/gym%20wear/gym%20wear%20banner%20-final%20.png"
+              alt="WOCHA Gym Wear Collection"
+              className="w-full h-auto object-contain block"
+            />
           </div>
         </div>
 
-        {/* Gym Wear Moving Product Strip */}
-        <CollectionCarousel
-          title="Gym Wear"
-          categorySlug="gym-wear"
-          products={GYM_WEAR_PRODUCTS}
-          autoplayIntervalMs={4500}
-        />
+        {/* Continuous Product Strip */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10">
+          <CollectionCarousel
+            categorySlug="gym-wear"
+            products={GYM_WEAR_PRODUCTS}
+            autoplayIntervalMs={4500}
+          />
+        </div>
       </section>
 
 
       {/* =========================================================================
-          COLLECTION 3: NORMAL WEAR
+          COLLECTION 3: WINTER WEAR
           ========================================================================= */}
       <section className="relative w-full bg-white border-b border-[#EDEAE3] pt-6 sm:pt-10">
-        <div className="max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-6">
-          {/* Normal Wear Billboard Banner */}
-          <div className="relative w-full h-[55vh] min-h-[440px] max-h-[620px] rounded-2xl overflow-hidden bg-[#1f1f1f] flex flex-col justify-end p-6 sm:p-10 lg:p-14 shadow-xs">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-              <img
-                src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=2000&q=80"
-                alt="WOCHA Normal Wear Collection"
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent pointer-events-none" />
-            </div>
-
-            {/* Bottom Content & Buttons */}
-            <div className="relative z-10 space-y-3 sm:space-y-4 text-white max-w-xl">
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md font-sans">
-                Normal Wear
-              </h2>
-
-              {/* Action Buttons */}
-              <div className="flex flex-row flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
-                <Link
-                  href="/shop?category=normal-wear"
-                  className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-[#111111] hover:bg-neutral-100 text-xs sm:text-sm font-semibold rounded-full transition-all shadow-md active:scale-95 cursor-pointer font-sans"
-                >
-                  Shop Normal Wear
-                </Link>
-              </div>
-            </div>
+        {/* Full-size Banner Image (Unobstructed, full size top, bottom, and both sides) */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 pt-2 sm:pt-4">
+          <div className="w-full overflow-hidden rounded-2xl bg-[#1f1f1f] shadow-xs">
+            <img
+              src="/WINTER%20WEAR/winter-wear-1/HOODIES%20-1.png"
+              alt="WOCHA Winter Wear Collection"
+              className="w-full h-auto object-contain block"
+            />
           </div>
         </div>
 
-        {/* Normal Wear Moving Product Strip */}
-        <CollectionCarousel
-          title="Normal Wear"
-          categorySlug="normal-wear"
-          products={NORMAL_WEAR_PRODUCTS}
-          autoplayIntervalMs={4500}
-        />
+        {/* Continuous Product Strip */}
+        <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10">
+          <CollectionCarousel
+            categorySlug="winter-wear"
+            products={WINTER_WEAR_PRODUCTS}
+            autoplayIntervalMs={4500}
+          />
+        </div>
       </section>
 
 

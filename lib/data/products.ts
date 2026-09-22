@@ -2,6 +2,7 @@ import { getAssetUrl } from '../storage';
 import {
   STREETWEAR_PRODUCTS,
   GYM_WEAR_PRODUCTS,
+  WINTER_WEAR_PRODUCTS,
   NORMAL_WEAR_PRODUCTS,
   ShowcaseProduct,
 } from './showcase';
@@ -9,6 +10,7 @@ import {
 export type ProductCategory =
   | 'streetwear'
   | 'gym-wear'
+  | 'winter-wear'
   | 'normal-wear'
   | 'hoodies'
   | 't-shirts'
@@ -58,7 +60,7 @@ function mapShowcaseToProduct(p: ShowcaseProduct): Product {
     compareAtPrice: p.compareAtUSD,
     sizes: p.sizes,
     colors: p.colors,
-    images: p.hoverImage ? [p.image, p.hoverImage] : [p.image],
+    images: p.images && p.images.length > 0 ? p.images : (p.hoverImage ? [p.image, p.hoverImage] : [p.image]),
     description: `${p.fit} with clean craftsmanship. Made from ${p.composition}.`,
     details: [p.composition, p.fit, p.tag || 'WOCHA Core Piece'],
     composition: p.composition,
@@ -71,6 +73,7 @@ function mapShowcaseToProduct(p: ShowcaseProduct): Product {
 const SHOWCASE_MOCK_PRODUCTS: Product[] = [
   ...STREETWEAR_PRODUCTS.map(mapShowcaseToProduct),
   ...GYM_WEAR_PRODUCTS.map(mapShowcaseToProduct),
+  ...WINTER_WEAR_PRODUCTS.map(mapShowcaseToProduct),
   ...NORMAL_WEAR_PRODUCTS.map(mapShowcaseToProduct),
 ];
 

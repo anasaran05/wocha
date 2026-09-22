@@ -60,6 +60,8 @@ function ShopContent() {
             ? 'Streetwear Collection'
             : category === 'gym-wear'
             ? 'Gym Wear Collection'
+            : category === 'winter-wear'
+            ? 'Winter Wear Collection'
             : category === 'normal-wear'
             ? 'Normal Wear Collection'
             : category === 'hoodies'
@@ -77,6 +79,8 @@ function ShopContent() {
             ? 'Oversized cuts, heavyweight cotton, and clean streetwear essentials.'
             : category === 'gym-wear'
             ? 'Breathable stretch fabrics, athletic fits, and comfortable training apparel.'
+            : category === 'winter-wear'
+            ? 'Ultra-heavyweight 480 GSM fleece hoodies and cold-season streetwear silhouettes.'
             : category === 'normal-wear'
             ? 'Everyday basics, soft cotton tees, and timeless pieces made for daily comfort.'
             : 'Explore our complete collection of streetwear, gym wear, and everyday essentials.'}
