@@ -136,13 +136,13 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
   return (
     <>
       <div
-        className="group relative flex flex-col bg-white hairline-border rounded-xl overflow-hidden hover:border-[#111111] hover:shadow-xl transition-all duration-300"
+        className="group relative flex flex-col h-full bg-white transition-all duration-300"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Visual Canvas (Aspect 3:4) */}
+        {/* Visual Canvas (Fixed Aspect 3:4, attached edge-to-edge) */}
         <div
-          className="relative block aspect-[3/4] w-full bg-[#F6F5F2] overflow-hidden select-none"
+          className="relative block aspect-[3/4] w-full bg-[#F5F4EF] overflow-hidden select-none"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -151,42 +151,31 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
               src={currentImg}
               alt={`${product.name} - view ${activeImageIndex + 1}`}
               loading="lazy"
-              className="w-full h-full object-contain p-2.5 transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             />
           </Link>
 
-          {/* Top Badges & Actions Overlay */}
-          <div className="absolute top-2.5 left-2.5 right-2.5 flex items-start justify-between pointer-events-none z-20">
-            <div className="flex flex-col gap-1 items-start">
-              <span className="bg-white/95 backdrop-blur-md text-[#482922] text-[10.5px] font-sans font-semibold px-2 py-0.5 rounded-full border border-[#D5D0C6] shadow-2xs">
-                {product.tag || 'New In'}
+          {/* Top Badges (Minimalist Nude Project style: plain text stacked) */}
+          <div className="absolute top-3 left-3 flex flex-col gap-0.5 items-start pointer-events-none z-10">
+            <span className="text-[11px] font-sans font-medium text-[#111111] tracking-tight">
+              {product.tag || 'New In'}
+            </span>
+            {product.isNewRelease && (
+              <span className="text-[10px] font-sans text-[#777777] tracking-tight">
+                Most Wanted
               </span>
-            </div>
-
-            {/* Quick Action Buttons (Wishlist & Full Gallery View) */}
-            <div className="flex items-center gap-1.5 pointer-events-auto">
-              {hasMultipleImages && (
-                <button
-                  type="button"
-                  onClick={handleOpenGallery}
-                  aria-label="View all angles"
-                  title="View all product angles"
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-md border border-[#EDEAE3] flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-colors shadow-2xs cursor-pointer active:scale-95 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                </button>
-              )}
-
-              <button
-                type="button"
-                onClick={handleToggleWishlist}
-                aria-label="Toggle wishlist"
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-md border border-[#EDEAE3] flex items-center justify-center text-[#482922] hover:bg-[#482922] hover:text-white transition-colors shadow-2xs cursor-pointer active:scale-95"
-              >
-                <Heart className={`w-3.5 h-3.5 stroke-[1.8] ${isLiked ? 'fill-[#482922] text-[#482922]' : ''}`} />
-              </button>
-            </div>
+            )}
           </div>
+
+          {/* Top Right: Sleek Wire Heart Icon */}
+          <button
+            type="button"
+            onClick={handleToggleWishlist}
+            aria-label="Toggle wishlist"
+            className="absolute top-2.5 right-2.5 z-10 p-1 text-[#111111] hover:scale-110 transition-transform cursor-pointer"
+          >
+            <Heart className={`w-4 h-4 stroke-[1.5] ${isLiked ? 'fill-[#111111] text-[#111111]' : 'text-[#111111]'}`} />
+          </button>
 
           {/* Left & Right Arrow Controls to cycle images one by one */}
           {hasMultipleImages && (
@@ -211,125 +200,52 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             </>
           )}
 
-          {/* Segmented Image Indicator Dots / Bars */}
+          {/* Eye Icon for Quick Lightbox (appears on hover) */}
           {hasMultipleImages && (
-            <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1 z-20 pointer-events-auto px-4">
-              <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/20">
-                {productImages.map((_, dotIdx) => (
-                  <button
-                    key={dotIdx}
-                    type="button"
-                    onClick={(e) => handleSelectImage(e, dotIdx)}
-                    onMouseEnter={(e) => handleSelectImage(e, dotIdx)}
-                    aria-label={`View angle ${dotIdx + 1}`}
-                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeImageIndex === dotIdx
-                        ? 'w-4 bg-white shadow-xs'
-                        : 'w-1.5 bg-white/45 hover:bg-white/80'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={handleOpenGallery}
+              aria-label="View all angles"
+              title="View all angles"
+              className="absolute bottom-2.5 right-2.5 z-10 w-6 h-6 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#111111] opacity-0 group-hover:opacity-100 transition-opacity shadow-xs cursor-pointer hover:bg-black hover:text-white"
+            >
+              <Eye className="w-3 h-3" />
+            </button>
           )}
-
-          {/* Quick Size Selector Bar (Slides up on deep hover) */}
-          <div
-            className={`absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-300 z-30 ${
-              isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-            }`}
-          >
-            <div className="flex items-center justify-between text-white text-[10px] font-mono mb-1.5 px-0.5">
-              <span className="uppercase tracking-wider">Quick Add</span>
-              {justAdded ? (
-                <span className="text-emerald-400 font-bold flex items-center gap-1">
-                  <Check className="w-3 h-3" /> Added to bag
-                </span>
-              ) : (
-                <span className="opacity-75">Select size</span>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 gap-1.5">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  onClick={(e) => handleQuickAdd(e, size)}
-                  className="bg-white/95 hover:bg-[#111111] hover:text-white text-[#111111] text-[11px] font-mono font-semibold py-1 rounded transition-colors duration-150 cursor-pointer shadow-sm active:scale-95"
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Product Information */}
-        <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-1 space-y-2">
-          <div>
-            <div className="flex items-center justify-between text-[11px] font-mono text-[#6B6B6B] uppercase mb-0.5">
-              <span>{product.categoryLabel}</span>
-              <span className="text-[#111111] font-semibold">{product.fit}</span>
-            </div>
+        {/* Minimalist Product Information (Directly beneath image, matching Nude Project reference) */}
+        <div className="pt-2.5 pb-3.5 px-3 flex flex-col space-y-1 bg-white">
+          <Link href={targetUrl} className="hover:opacity-75 transition-opacity">
+            <h3 className="text-xs sm:text-[13px] font-normal text-[#111111] line-clamp-1 leading-snug">
+              {product.name}
+            </h3>
+          </Link>
 
-            <Link href={targetUrl} className="group-hover:text-[#111111] transition-colors">
-              <h3 className="text-sm font-semibold tracking-tight text-[#111111] line-clamp-1 leading-snug">
-                {product.name}
-              </h3>
-            </Link>
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs font-mono text-[#111111]">
+              {formatPrice(product.priceUSD)}
+            </span>
+            {product.compareAtUSD && (
+              <span className="text-[11px] text-[#999999] line-through font-mono">
+                {formatPrice(product.compareAtUSD)}
+              </span>
+            )}
           </div>
 
-          {/* Mini Thumbnail Row when hovering */}
-          {hasMultipleImages && (
-            <div className="flex items-center gap-1 pt-0.5 overflow-x-auto no-scrollbar">
-              {productImages.map((thumbUrl, tIdx) => (
-                <button
-                  key={tIdx}
-                  type="button"
-                  onClick={(e) => handleSelectImage(e, tIdx)}
-                  onMouseEnter={(e) => handleSelectImage(e, tIdx)}
-                  className={`w-7 h-8 rounded shrink-0 border overflow-hidden transition-all bg-[#F6F5F2] ${
-                    activeImageIndex === tIdx
-                      ? 'border-[#111111] ring-1 ring-[#111111] scale-105'
-                      : 'border-neutral-200 opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <img
-                    src={thumbUrl}
-                    alt={`Thumb ${tIdx + 1}`}
-                    className="w-full h-full object-contain p-0.5"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Price & Color indicators */}
-          <div className="pt-1.5 flex items-center justify-between border-t border-[#F0EFEA]">
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold text-[#111111] font-mono">
-                {formatPrice(product.priceUSD)}
-              </span>
-              {product.compareAtUSD && (
-                <span className="text-xs text-[#999999] line-through font-mono">
-                  {formatPrice(product.compareAtUSD)}
-                </span>
-              )}
-            </div>
-
-            {/* Color Dots */}
-            <div className="flex items-center gap-1">
+          {/* Color swatches */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="flex items-center gap-1.5 pt-1">
               {product.colors.map((c, i) => (
                 <span
                   key={i}
                   title={c.name}
-                  className="w-2.5 h-2.5 rounded-full border border-black/15 shadow-2xs"
+                  className="w-2.5 h-2.5 rounded-2xs border border-black/20 shrink-0 inline-block"
                   style={{ backgroundColor: c.hex }}
                 />
               ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
 
