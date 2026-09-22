@@ -32,7 +32,7 @@ export function AppEntryLoader({ children }: AppEntryLoaderProps) {
   return (
     <StackLoader
       images={WOCHA_PRODUCT_1_IMAGES}
-      imageSize={1.1}
+      imageSize={1}
       duration={1}
       fadeOutDuration={0.8}
       backgroundColor="#FAFAF8"

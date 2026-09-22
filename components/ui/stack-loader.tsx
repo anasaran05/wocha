@@ -29,18 +29,17 @@ const TEXT_TRANSFORM_PERSPECTIVE = 1000;
 const IMAGE_Z_INDEX_DURATION = 0.1;
 const IMAGE_Z_INDEX_STAGGER = 0.2;
 const TEXT_STAGGER = 0.08;
-const STACK_SCALE_STEP = 0.15;
-const STACK_Y_PERCENT_STEP = 20;
+const STACK_SCALE_STEP = 0.04;
+const STACK_Y_PERCENT_STEP = 6;
 const SPREAD_Y_PERCENT_STEP = 110;
 const IMAGE_FADE_STAGGER = 0.08;
 
-// WOCHA Product Images (Only the "1" named product images)
+// WOCHA Product Images (6 authentic product "1.png" images in 3:4 card ratio)
 export const WOCHA_PRODUCT_1_IMAGES = [
   "/street wear/f1-redbull/1.png",
   "/street wear/hotwheels/1.png",
-  "/street wear/holy-sprit/1.png",
   "/gym wear/SPORTS-DROPSHOULDER/1.png",
-  "/gym wear/gym-wear-2/1.png",
+  "/gym wear/gym-wear-3/1.png",
   "/Desing wear/black-shirt/1.png",
   "/Desing wear/red-shirt/1.png",
 ];
@@ -91,7 +90,7 @@ const StackToSpreadIntro = forwardRef<HTMLElement, StackToSpreadIntroProps>(
   const text2Ref = useRef<HTMLParagraphElement | null>(null);
   const descriptionTextRef = useRef<HTMLParagraphElement | null>(null);
   const onCompleteRef = useRef(onComplete);
-  const safeImageSize = clampNumber(imageSize, 0.5, 4, 1.2);
+  const safeImageSize = clampNumber(imageSize, 0.5, 2.5, 1);
   const safeDuration = clampNumber(duration, 0.25, 3, 1);
   const safeFadeOutDuration = clampNumber(fadeOutDuration, 0.1, 3, 0.8);
 
@@ -407,8 +406,8 @@ const StackToSpreadIntro = forwardRef<HTMLElement, StackToSpreadIntroProps>(
           id={imgsWrapperId}
           className="relative max-[1025px]:z-99 shrink-0"
           style={{
-            width: `clamp(14rem, ${20 * safeImageSize}vw, 30rem)`,
-            height: `clamp(16rem, ${23 * safeImageSize}vw, 34rem)`,
+            width: `clamp(11rem, ${14 * safeImageSize}vw, 17rem)`,
+            height: `clamp(14.6rem, ${18.6 * safeImageSize}vw, 22.6rem)`,
           }}
         >
           {images.map((src, index) => (
@@ -417,7 +416,7 @@ const StackToSpreadIntro = forwardRef<HTMLElement, StackToSpreadIntroProps>(
               ref={(element) => {
                 imagesRef.current[index] = element;
               }}
-              className="absolute top-0 left-0 size-full overflow-hidden rounded-2xl bg-[#F4F4F2] border border-[#E5E3DD] shadow-2xl opacity-0 p-2 sm:p-3 flex items-center justify-center"
+              className="absolute top-0 left-0 size-full overflow-hidden rounded-2xl bg-[#F4F4F2] border border-[#E5E3DD] shadow-xl opacity-0 p-3 sm:p-4 flex items-center justify-center"
             >
               <img
                 src={encodeURI(src)}
