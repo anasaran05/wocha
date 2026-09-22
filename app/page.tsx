@@ -27,49 +27,49 @@ function InstagramIcon({ className = 'w-4 h-4' }: { className?: string }) {
   );
 }
 
-// Lookbook Street Gallery Images
+// Lookbook Street Gallery Images (Real WOCHA pieces worn by models)
 const STREET_LOOKBOOK = [
   {
-    image: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1000&q=80',
-    title: 'Fleece Pullover',
+    image: '/street%20wear/street-wear-1/Screenshot%202026-09-22%20at%2010.24.09%E2%80%AFAM.png',
+    title: 'F1 Racing Drop-Shoulder Tee',
     city: 'Berlin',
-    tag: '@niko_berlin',
+    tag: '@alex_streets',
     productLink: '/shop?category=streetwear',
   },
   {
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=80',
-    title: 'Boxy Cotton Tee',
-    city: 'Madrid',
-    tag: '@carlos_m',
+    image: '/street%20wear/street-wear-2/Screenshot%202026-09-22%20at%2010.20.57%E2%80%AFAM.png',
+    title: 'Holy Spirit Boxy Tee',
+    city: 'Tokyo',
+    tag: '@karan_drop',
     productLink: '/shop?category=streetwear',
   },
   {
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=80',
-    title: 'Training Stringer',
+    image: '/gym%20wear/gym-wear-1/human-front.png',
+    title: 'Sports Drop-Shoulder Tee',
     city: 'London',
     tag: '@dan_trains',
     productLink: '/shop?category=gym-wear',
   },
   {
-    image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1000&q=80',
-    title: 'Everyday Crewneck',
+    image: '/gym%20wear/gym-wear-2/Screenshot%202026-09-22%20at%209.46.42%E2%80%AFAM.png',
+    title: 'Performance Pump Tee',
+    city: 'Madrid',
+    tag: '@sam_iron',
+    productLink: '/shop?category=gym-wear',
+  },
+  {
+    image: '/WINTER%20WEAR/winter-wear-1/Screenshot%202026-09-22%20at%2010.26.43%E2%80%AFAM.png',
+    title: 'Heavy Fleece Hoodie',
     city: 'Paris',
-    tag: '@lucas_marais',
-    productLink: '/shop?category=normal-wear',
+    tag: '@zara_frost',
+    productLink: '/shop?category=winter-wear',
   },
   {
-    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1000&q=80',
-    title: 'Oversized Street Hoodie',
-    city: 'Tokyo',
-    tag: '@kenji_shibuya',
-    productLink: '/shop?category=streetwear',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1000&q=80',
-    title: 'Relaxed Daily Tee',
+    image: '/WINTER%20WEAR/winter-wear-1/Screenshot%202026-09-22%20at%2010.27.13%E2%80%AFAM.png',
+    title: 'Oversized Streetwear Hoodie',
     city: 'Seoul',
     tag: '@seoul_fits',
-    productLink: '/shop?category=normal-wear',
+    productLink: '/shop?category=winter-wear',
   },
 ];
 
