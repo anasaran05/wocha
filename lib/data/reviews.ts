@@ -14,11 +14,37 @@ export interface ProductReview {
 }
 
 const MOCK_REVIEWS: Record<string, ProductReview[]> = {
-  'hoodie-01': [
+  'sw-01': [
     {
       id: 'rev-01',
-      productId: 'hoodie-01',
+      productId: 'sw-01',
       userId: 'usr-1',
+      userName: 'Aarav M.',
+      rating: 5,
+      title: 'Incredible heavyweight drape',
+      body: 'The 280 GSM cotton feels premium and sturdy. Holds its structured boxy silhouette even after multiple washes.',
+      isVerifiedPurchase: true,
+      status: 'approved',
+      createdAt: '2026-08-10T14:30:00Z',
+    },
+    {
+      id: 'rev-02',
+      productId: 'sw-01',
+      userId: 'usr-2',
+      userName: 'Elena M.',
+      rating: 5,
+      title: 'Clean minimal aesthetic',
+      body: 'Exact fit I was looking for. Loose shoulders and clean drop without being excessively baggy.',
+      isVerifiedPurchase: true,
+      status: 'approved',
+      createdAt: '2026-08-18T09:15:00Z',
+    },
+  ],
+  'hoodie-01': [
+    {
+      id: 'rev-03',
+      productId: 'hoodie-01',
+      userId: 'usr-3',
       userName: 'Julian K.',
       rating: 5,
       title: 'Architectural silhouette perfection',
@@ -27,23 +53,11 @@ const MOCK_REVIEWS: Record<string, ProductReview[]> = {
       status: 'approved',
       createdAt: '2026-08-10T14:30:00Z',
     },
-    {
-      id: 'rev-02',
-      productId: 'hoodie-01',
-      userId: 'usr-2',
-      userName: 'Elena M.',
-      rating: 5,
-      title: 'Zero exterior branding is pure luxury',
-      body: 'Exceptional Portuguese craftsmanship. Fits wide through shoulders while staying cropped at the waistband.',
-      isVerifiedPurchase: true,
-      status: 'approved',
-      createdAt: '2026-08-18T09:15:00Z',
-    },
   ],
 };
 
 export function getReviewsSync(productId: string): ProductReview[] {
-  return MOCK_REVIEWS[productId] || [];
+  return MOCK_REVIEWS[productId] || MOCK_REVIEWS['sw-01'] || [];
 }
 
 export async function getReviewsForProduct(productId: string): Promise<ProductReview[]> {

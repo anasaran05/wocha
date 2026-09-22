@@ -128,10 +128,10 @@ export function Navbar() {
               Gym Wear
             </Link>
             <Link
-              href="/shop?category=winter-wear"
+              href="/shop?category=designer-choice"
               className="transition-colors hover:text-black font-semibold"
             >
-              Winter Wear
+              Designer&apos;s Choice
             </Link>
             <Link
               href="/shop?filter=new"
@@ -265,11 +265,11 @@ export function Navbar() {
                 Gym Wear
               </Link>
               <Link
-                href="/shop?category=winter-wear"
+                href="/shop?category=designer-choice"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-black font-semibold"
               >
-                Winter Wear
+                Designer&apos;s Choice
               </Link>
               <Link
                 href="/shop?filter=new"

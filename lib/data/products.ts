@@ -2,14 +2,15 @@ import { getAssetUrl } from '../storage';
 import {
   STREETWEAR_PRODUCTS,
   GYM_WEAR_PRODUCTS,
+  DESIGNER_CHOICE_PRODUCTS,
   WINTER_WEAR_PRODUCTS,
-  NORMAL_WEAR_PRODUCTS,
   ShowcaseProduct,
 } from './showcase';
 
 export type ProductCategory =
   | 'streetwear'
   | 'gym-wear'
+  | 'designer-choice'
   | 'winter-wear'
   | 'normal-wear'
   | 'hoodies'
@@ -89,319 +90,11 @@ function mapShowcaseToProduct(p: ShowcaseProduct): Product {
 const SHOWCASE_MOCK_PRODUCTS: Product[] = [
   ...STREETWEAR_PRODUCTS.map(mapShowcaseToProduct),
   ...GYM_WEAR_PRODUCTS.map(mapShowcaseToProduct),
-  ...WINTER_WEAR_PRODUCTS.map(mapShowcaseToProduct),
-  ...NORMAL_WEAR_PRODUCTS.map(mapShowcaseToProduct),
+  ...DESIGNER_CHOICE_PRODUCTS.map(mapShowcaseToProduct),
 ];
 
 export const MOCK_PRODUCTS: Product[] = [
   ...SHOWCASE_MOCK_PRODUCTS,
-  // --- HOODIES ---
-  {
-    id: 'hoodie-01',
-    name: '01 Heavyweight Boxy Hoodie',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
-    price: 185,
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Pitch Black', hex: '#111111' },
-      { name: 'Chalk Bone', hex: '#EBE9E1' },
-      { name: 'Muted Clay', hex: '#B85C3E' },
-    ],
-    images: [
-      getAssetUrl('hoodies', 'hoodie-01', 'front.jpg'),
-      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Constructed from 480 GSM organic loopback French terry. Cut in an architectural boxy silhouette with dropped shoulders, ribbed cuff framing, and zero exterior branding.',
-    details: [
-      '480 GSM heavy loopback French terry',
-      'Preshrunk combed organic cotton',
-      'Double-layer articulated hood without drawstrings',
-      'Blind stitch finish along waist hem',
-      'Made in Portugal',
-    ],
-    composition: '100% Organic Combed Cotton',
-    weight: '480 GSM',
-    isNew: true,
-  },
-  {
-    id: 'hoodie-02',
-    name: '02 Atelier Zip Pullover',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
-    price: 210,
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    colors: [
-      { name: 'Washed Charcoal', hex: '#262626' },
-      { name: 'Raw Ecru', hex: '#ECE8DF' },
-    ],
-    images: [
-      getAssetUrl('hoodies', 'hoodie-02', 'front.jpg'),
-      'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Engineered half-zip silhouette featuring matte oxidized nickel hardware. Relaxed chest with a tapered lower band for balanced proportion over trousers.',
-    details: [
-      'Custom Swiss riri two-way zipper',
-      '450 GSM diagonal loop terry',
-      'Side seam concealed card pockets',
-      'Garment dyed with low-impact pigment',
-    ],
-    composition: '100% Cotton Terry',
-    weight: '450 GSM',
-  },
-  {
-    id: 'hoodie-03',
-    name: '03 Oversized Raw Edge Fleece',
-    category: 'hoodies',
-    categoryLabel: 'Hoodies',
-    price: 165,
-    compareAtPrice: 195,
-    sizes: ['M', 'L', 'XL'],
-    colors: [
-      { name: 'Oatmeal Heather', hex: '#D8D4C8' },
-      { name: 'Jet Obsidian', hex: '#0D0D0D' },
-    ],
-    images: [
-      getAssetUrl('hoodies', 'hoodie-03', 'front.jpg'),
-      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Subtle distressing along cuffs and hem creates a lived-in texture. Ultra-dense brushed interior provides exceptional insulation with a relaxed drape.',
-    details: [
-      'Brushed fleece interior',
-      'Subtle raw edge cuff treatment',
-      'Reinforced shoulder tape',
-    ],
-    composition: '80% Organic Cotton, 20% Recycled Polyester',
-    weight: '420 GSM',
-    onSale: true,
-  },
-
-  // --- T-SHIRTS ---
-  {
-    id: 'tshirt-01',
-    name: '01 Heavyweight Boxy Tee',
-    category: 't-shirts',
-    categoryLabel: 'T-Shirts',
-    price: 75,
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    colors: [
-      { name: 'Optical White', hex: '#FDFDFD' },
-      { name: 'Soot Black', hex: '#141414' },
-      { name: 'Muted Clay', hex: '#B85C3E' },
-    ],
-    images: [
-      getAssetUrl('t-shirts', 'tshirt-01', 'front.jpg'),
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Our core everyday silhouette. Cut from 280 GSM dry-touch carded jersey that holds its sculptural structure through continuous wear.',
-    details: [
-      '280 GSM heavyweight carded jersey',
-      '1.25" bound ribbed collar with high retention',
-      'Drop shoulder with extended sleeve pitch',
-      'Twin needle hem construction',
-    ],
-    composition: '100% Combed Cotton',
-    weight: '280 GSM',
-    isNew: true,
-  },
-  {
-    id: 'tshirt-02',
-    name: '02 Supima Relaxed Mockneck',
-    category: 't-shirts',
-    categoryLabel: 'T-Shirts',
-    price: 90,
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Concrete Grey', hex: '#8F908E' },
-      { name: 'Pitch Black', hex: '#111111' },
-    ],
-    images: [
-      getAssetUrl('t-shirts', 'tshirt-02', 'front.jpg'),
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Long-staple American Supima cotton crafted with a subtle 3cm mock collar. Silky hand-feel with structural drape for elevated layering.',
-    details: [
-      'Extra-long staple Supima cotton',
-      '3cm ribbed mock collar',
-      'Silicon wash finish for zero pilling',
-    ],
-    composition: '100% Supima Cotton',
-    weight: '240 GSM',
-  },
-  {
-    id: 'tshirt-03',
-    name: '03 Raw Hem Studio Tee',
-    category: 't-shirts',
-    categoryLabel: 'T-Shirts',
-    price: 65,
-    sizes: ['S', 'M', 'L'],
-    colors: [
-      { name: 'Washed Chalk', hex: '#EBE7DF' },
-      { name: 'Faded Black', hex: '#2A2A2A' },
-    ],
-    images: [
-      getAssetUrl('t-shirts', 'tshirt-03', 'front.jpg'),
-      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Washed single jersey treated with an enzyme stone rinse for authentic vintage character. Finished with laser-cut raw sleeve and body edges.',
-    details: [
-      'Enzyme stone wash treatment',
-      'Laser-cut raw edge hem',
-      'Pre-shrunk jersey',
-    ],
-    composition: '100% Ring-spun Cotton',
-    weight: '210 GSM',
-  },
-
-  // --- PUFFERS ---
-  {
-    id: 'puffer-01',
-    name: '01 Baffle Quilted Down Puffer',
-    category: 'puffers',
-    categoryLabel: 'Puffers',
-    price: 360,
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Obsidian Matte', hex: '#121212' },
-      { name: 'Olive Drab', hex: '#3B4136' },
-      { name: 'Bone White', hex: '#E7E5DD' },
-    ],
-    images: [
-      getAssetUrl('puffers', 'puffer-01', 'front.jpg'),
-      'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Engineered for extreme thermal retention with 750 fill-power responsibly sourced down. Japanese micro-ripstop nylon shell with PFC-free DWR water repellent coating.',
-    details: [
-      '750 Fill-power RDS certified goose down',
-      'Waterproof Japanese ripstop exterior',
-      'Internal fleece-lined draft storm collar',
-      'Two-way YKK Aquaguard zippers',
-      'Concealed hem bungee tensioners',
-    ],
-    composition: 'Shell: 100% Recycled Nylon | Fill: 90% Down, 10% Feather',
-    weight: '750 Fill Power',
-    isNew: true,
-  },
-  {
-    id: 'puffer-02',
-    name: '02 Cropped Boxy Down Vest',
-    category: 'puffers',
-    categoryLabel: 'Puffers',
-    price: 240,
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Matte Black', hex: '#161616' },
-      { name: 'Raw Sand', hex: '#C2B8A3' },
-    ],
-    images: [
-      getAssetUrl('puffers', 'puffer-02', 'front.jpg'),
-      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Architectural cropped vest silhouette designed for modular outerwear layering. Clean baffle divisions and magnetic storm placket.',
-    details: [
-      '700 Fill-power white duck down',
-      'Concealed FIDLOCK magnetic closures',
-      'Dual deep welt hand-warmer pockets',
-    ],
-    composition: 'Shell: 100% Technical Taslan | Fill: 90/10 Down',
-    weight: '700 Fill Power',
-  },
-  {
-    id: 'puffer-03',
-    name: '03 Technical Long Parka',
-    category: 'puffers',
-    categoryLabel: 'Puffers',
-    price: 440,
-    compareAtPrice: 510,
-    sizes: ['M', 'L', 'XL'],
-    colors: [
-      { name: 'Carbon Black', hex: '#181818' },
-    ],
-    images: [
-      getAssetUrl('puffers', 'puffer-03', 'front.jpg'),
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Extended thigh-length coverage engineered for blizzard conditions. Triple-layer laminate membrane delivers complete wind-blocking and rain defense.',
-    details: [
-      '800 Fill-power European goose down',
-      'Fully taped interior seams',
-      'Internal backpack carry straps',
-    ],
-    composition: 'Shell: 3L GORE-TEX Infinium | Fill: 800 FP Goose Down',
-    weight: '800 Fill Power',
-    onSale: true,
-  },
-
-  // --- CUSTOMIZABLE T-SHIRTS ---
-  {
-    id: 'custom-01',
-    name: 'Atelier Configurable Tee',
-    category: 'customizable',
-    categoryLabel: 'Custom Studio',
-    price: 95,
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    colors: [
-      { name: 'Vintage White', hex: '#FAF8F5' },
-      { name: 'Washed Black', hex: '#1E1E1E' },
-      { name: 'Sand Dune', hex: '#D6CEBE' },
-      { name: 'Muted Clay', hex: '#B85C3E' },
-    ],
-    images: [
-      getAssetUrl('customizable', 'custom-01', 'front.jpg'),
-      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'Our signature bespoke garment. Premium 260 GSM organic jersey configured to order with custom typographic embossing or minimalist graphic motifs.',
-    details: [
-      'High-precision water-based screenprint / heat transfer',
-      'Choice of 3 curated typographic systems',
-      'Left pocket, center chest, or upper spine placement',
-      'Customized and finished individually by hand',
-    ],
-    composition: '100% Organic Ring-Spun Cotton',
-    weight: '260 GSM',
-    customizable: true,
-    defaultCustomization: {
-      baseColor: '#FAF8F5',
-      text: 'WOCHA STUDIO',
-      placement: 'left-chest',
-      font: 'grotesk',
-      graphicPreset: 'ARCHIVE-01',
-    },
-    isNew: true,
-  },
-  {
-    id: 'custom-02',
-    name: 'Bespoke Typographic Oversize Tee',
-    category: 'customizable',
-    categoryLabel: 'Custom Studio',
-    price: 110,
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Chalk White', hex: '#FFFFFF' },
-      { name: 'Raw Carbon', hex: '#1C1C1C' },
-    ],
-    images: [
-      getAssetUrl('customizable', 'custom-02', 'front.jpg'),
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80',
-    ],
-    description: 'High-density 300 GSM silhouette with customized oversized rear typographic typography and personalized coordinates.',
-    details: [
-      'Heavy drape 300 GSM fabric weight',
-      'Custom text print spanning upper back',
-      'Personalized coordinate tag inside collar',
-    ],
-    composition: '100% Combed Heavy Cotton',
-    weight: '300 GSM',
-    customizable: true,
-    defaultCustomization: {
-      baseColor: '#FFFFFF',
-      text: 'SYSTEM ARCHIVE // 2026',
-      placement: 'upper-back',
-      font: 'mono',
-      graphicPreset: 'METRIC-FRAME',
-    },
-  },
 ];
 
 export interface ProductFilter {
@@ -644,10 +337,7 @@ export function getCategories() {
     { id: 'all', label: 'All Items', count: MOCK_PRODUCTS.length },
     { id: 'streetwear', label: 'Streetwear', count: MOCK_PRODUCTS.filter((p) => p.category === 'streetwear').length },
     { id: 'gym-wear', label: 'Gym Wear', count: MOCK_PRODUCTS.filter((p) => p.category === 'gym-wear').length },
-    { id: 'normal-wear', label: 'Normal Wear', count: MOCK_PRODUCTS.filter((p) => p.category === 'normal-wear').length },
-    { id: 'hoodies', label: 'Hoodies', count: MOCK_PRODUCTS.filter((p) => p.category === 'hoodies').length },
-    { id: 't-shirts', label: 'T-Shirts', count: MOCK_PRODUCTS.filter((p) => p.category === 't-shirts').length },
-    { id: 'puffers', label: 'Jackets', count: MOCK_PRODUCTS.filter((p) => p.category === 'puffers').length },
+    { id: 'designer-choice', label: "Designer's Choice", count: MOCK_PRODUCTS.filter((p) => p.category === 'designer-choice').length },
   ];
 }
 

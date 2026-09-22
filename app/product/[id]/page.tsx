@@ -117,19 +117,19 @@ export default function ProductDetailPage() {
       </nav>
 
       {/* Main Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-        {/* Gallery: 7 cols */}
-        <div className="lg:col-span-7 space-y-4">
-          {/* Main Large Image */}
-          <div className="relative aspect-[3/4] w-full bg-[#F5F4EF] hairline-border rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Gallery: 6 cols (Restrained luxury dimension) */}
+        <div className="lg:col-span-6 space-y-4 max-w-[500px] mx-auto w-full">
+          {/* Main Showcase Image */}
+          <div className="relative aspect-[3/4] max-h-[540px] w-full bg-[#F4F4F2] hairline-border rounded-xl overflow-hidden p-3 sm:p-5 flex items-center justify-center">
             <Image
               src={product.images[selectedImage] || product.images[0]}
               alt={product.name}
               fill
               priority
               unoptimized
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 500px"
+              className="object-contain object-center p-2 sm:p-4"
             />
             {product.customizable && (
               <span className="absolute top-4 left-4 bg-[#111111] text-white text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded">
@@ -140,13 +140,13 @@ export default function ProductDetailPage() {
 
           {/* Thumbnail Strip */}
           {product.images.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto pb-2">
+            <div className="flex gap-2.5 overflow-x-auto pb-2 justify-center sm:justify-start">
               {product.images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
-                  className={`relative w-20 aspect-square bg-[#F5F4EF] hairline-border rounded-lg overflow-hidden shrink-0 cursor-pointer transition-all ${
-                    selectedImage === idx ? 'ring-1 ring-[#111111] border-[#111111]' : 'opacity-70 hover:opacity-100'
+                  className={`relative w-16 sm:w-20 aspect-square bg-[#F4F4F2] hairline-border rounded-lg overflow-hidden shrink-0 cursor-pointer transition-all p-1 ${
+                    selectedImage === idx ? 'ring-2 ring-[#111111] border-[#111111]' : 'opacity-70 hover:opacity-100'
                   }`}
                 >
                   <Image
@@ -155,7 +155,7 @@ export default function ProductDetailPage() {
                     fill
                     unoptimized
                     sizes="80px"
-                    className="object-cover object-center"
+                    className="object-contain object-center p-1"
                   />
                 </button>
               ))}
@@ -163,8 +163,8 @@ export default function ProductDetailPage() {
           )}
         </div>
 
-        {/* Product Details & Selection: 5 cols */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* Product Details & Selection: 6 cols */}
+        <div className="lg:col-span-6 space-y-6">
           {/* Title & Price Header */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">

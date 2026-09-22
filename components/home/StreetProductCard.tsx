@@ -144,38 +144,43 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
       >
         {/* Visual Canvas (Fixed Aspect 3:4, attached edge-to-edge) */}
         <div
-          className="relative block aspect-[3/4] w-full bg-[#F5F4EF] overflow-hidden select-none"
+          className="relative block aspect-[3/4] w-full bg-[#F4F4F2] overflow-hidden select-none"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <Link href={targetUrl} prefetch={true} className="absolute inset-0 block cursor-pointer">
+          <Link href={targetUrl} prefetch={true} className="absolute inset-0 p-3 sm:p-4 flex items-center justify-center block cursor-pointer">
+            {/* Primary Base Image (1.png or active angle) */}
             <img
-              src={currentImg}
+              src={productImages[activeImageIndex] || product.image}
               alt={`${product.name} - view ${activeImageIndex + 1}`}
               loading="lazy"
-              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className={`w-full h-full object-contain object-center transition-all duration-500 ease-out group-hover:scale-[1.04] ${
+                activeImageIndex === 0 && hasMultipleImages && isHovered ? 'opacity-0' : 'opacity-100'
+              }`}
             />
+            {/* Hover Image (2.png) revealed on desktop hover */}
+            {hasMultipleImages && activeImageIndex === 0 && (
+              <img
+                src={productImages[1]}
+                alt={`${product.name} - hover view`}
+                loading="lazy"
+                className={`absolute inset-0 m-auto p-3 sm:p-4 w-full h-full object-contain object-center transition-all duration-500 ease-out group-hover:scale-[1.04] ${
+                  isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                }`}
+              />
+            )}
           </Link>
 
-          {/* Top Left Tag / Badge - Distinctive WOCHA frosted pill */}
-          <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 pointer-events-none z-10 max-w-[85%]">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-black/10 text-[10px] font-mono font-medium uppercase tracking-wider text-[#111111] shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0" />
-              {product.tag || (product.isNewRelease ? 'NEW RELEASE' : 'STUDIO')}
-            </span>
-            {product.isNewRelease && product.tag && (
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-900/90 backdrop-blur-md text-white text-[9px] font-mono tracking-wider uppercase font-semibold">
-                HOT
-              </span>
-            )}
-          </div>
-
-          {/* Top Right: Sleek Frosted Wishlist Roundel */}
+          {/* Top Right: Sleek Frosted Wishlist Roundel (Reveals on hover on desktop; accessible on mobile) */}
           <button
             type="button"
             onClick={handleToggleWishlist}
             aria-label="Toggle wishlist"
-            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/85 backdrop-blur-md border border-black/5 flex items-center justify-center text-[#111111] hover:bg-white hover:scale-110 transition-all cursor-pointer shadow-xs active:scale-95"
+            className={`absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/85 backdrop-blur-md border border-black/5 flex items-center justify-center text-[#111111] hover:bg-white hover:scale-110 transition-all cursor-pointer shadow-xs active:scale-90 ${
+              isLiked
+                ? 'opacity-100'
+                : 'opacity-85 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100'
+            }`}
           >
             <Heart className={`w-3.5 h-3.5 stroke-[1.75] ${isLiked ? 'fill-[#111111] text-[#111111]' : 'text-[#111111]'}`} />
           </button>
@@ -230,13 +235,7 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
         </div>
 
         {/* Distinctive WOCHA Product Information */}
-        <div className="pt-2.5 pb-3 px-3 flex flex-col space-y-1.5 bg-white">
-          {/* Fit & Specs Ticker */}
-          <div className="flex items-center justify-between gap-1 text-[9.5px] font-mono uppercase tracking-[0.14em] text-neutral-400">
-            <span className="truncate">{product.fit || 'Oversized Fit'}</span>
-            {product.weight && <span className="shrink-0">{product.weight}</span>}
-          </div>
-
+        <div className="pt-2 pb-2.5 px-2.5 sm:px-3 flex flex-col space-y-1 bg-white">
           {/* Product Title */}
           <Link href={targetUrl} prefetch={true} className="group/title block">
             <h3 className="text-[13px] font-medium text-[#111111] line-clamp-1 leading-snug group-hover/title:text-neutral-500 transition-colors">
@@ -244,54 +243,17 @@ export function StreetProductCard({ product, index = 0 }: StreetProductCardProps
             </h3>
           </Link>
 
-          {/* Price & Discount Indicator */}
-          <div className="flex items-center justify-between pt-0.5">
-            <div className="flex items-baseline gap-2">
-              <span className="text-xs sm:text-[13px] font-mono font-semibold text-[#111111]">
-                {formatPrice(product.priceUSD, { INR: product.priceINR })}
-              </span>
-              {product.compareAtUSD && (
-                <span className="text-[11px] text-neutral-400 line-through font-mono">
-                  {formatPrice(product.compareAtUSD, product.compareAtINR ? { INR: product.compareAtINR } : undefined)}
-                </span>
-              )}
-            </div>
+          {/* Price */}
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs sm:text-[13px] font-mono font-semibold text-[#111111]">
+              {formatPrice(product.priceUSD, { INR: product.priceINR })}
+            </span>
             {product.compareAtUSD && (
-              <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-xs bg-[#111111]/5 text-[#111111] font-medium tracking-tight">
-                SALE
+              <span className="text-[11px] text-neutral-400 line-through font-mono">
+                {formatPrice(product.compareAtUSD, product.compareAtINR ? { INR: product.compareAtINR } : undefined)}
               </span>
             )}
           </div>
-
-          {/* Interactive Circular Color Selector */}
-          {product.colors && product.colors.length > 0 && (
-            <div className="flex items-center justify-between pt-1.5 border-t border-neutral-100/90">
-              <div className="flex items-center gap-1.5">
-                {product.colors.map((c, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setSelectedColorIndex(i);
-                    }}
-                    title={c.name}
-                    aria-label={`Select color ${c.name}`}
-                    className={`w-3.5 h-3.5 rounded-full border border-black/15 transition-all cursor-pointer relative ${
-                      selectedColorIndex === i
-                        ? 'ring-2 ring-black ring-offset-1 scale-110'
-                        : 'hover:scale-110 opacity-75 hover:opacity-100'
-                    }`}
-                    style={{ backgroundColor: c.hex }}
-                  />
-                ))}
-              </div>
-              <span className="text-[10px] font-mono text-neutral-500 tracking-tight">
-                {product.colors[selectedColorIndex]?.name || `${product.colors.length} shades`}
-              </span>
-            </div>
-          )}
         </div>
       </div>
 

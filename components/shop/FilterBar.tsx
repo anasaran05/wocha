@@ -17,11 +17,7 @@ const CATEGORIES: { id: ProductCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All Items' },
   { id: 'streetwear', label: 'Streetwear' },
   { id: 'gym-wear', label: 'Gym Wear' },
-  { id: 'winter-wear', label: 'Winter Wear' },
-  { id: 'normal-wear', label: 'Normal Wear' },
-  { id: 'hoodies', label: 'Hoodies' },
-  { id: 't-shirts', label: 'T-Shirts' },
-  { id: 'puffers', label: 'Jackets' },
+  { id: 'designer-choice', label: "Designer's Choice" },
 ];
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];

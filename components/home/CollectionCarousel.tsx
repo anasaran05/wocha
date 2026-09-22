@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useRef } from 'react';
 import { ShowcaseProduct } from '@/lib/data/showcase';
 import { StreetProductCard } from './StreetProductCard';
 
@@ -9,136 +8,81 @@ interface CollectionCarouselProps {
   title?: string;
   categorySlug?: string;
   products: ShowcaseProduct[];
-  autoplayIntervalMs?: number; // default 4500ms (4.5s)
+  autoplayIntervalMs?: number;
   animateEntry?: boolean;
 }
 
 export function CollectionCarousel({
-  categorySlug,
   products,
-  autoplayIntervalMs = 4500,
   animateEntry = false,
 }: CollectionCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  const [cardsPerView, setCardsPerView] = useState<number>(5);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef<boolean>(false);
+  const isMoved = useRef<boolean>(false);
+  const startX = useRef<number>(0);
+  const scrollLeft = useRef<number>(0);
 
-  const touchStartX = useRef<number | null>(null);
+  // Desktop Mouse Drag to Scroll
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    isMoved.current = false;
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeft.current = scrollRef.current.scrollLeft;
+  };
 
-  // Responsive cards-per-view tracking
-  useEffect(() => {
-    function handleResize() {
-      if (typeof window === 'undefined') return;
-      if (window.innerWidth < 640) {
-        setCardsPerView(2); // exactly 2 cards on mobile
-      } else if (window.innerWidth < 1024) {
-        setCardsPerView(3); // 3 cards on tablet
-      } else {
-        setCardsPerView(5); // exactly 5 cards on desktop
-      }
+  const handleMouseLeave = () => {
+    isDragging.current = false;
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.3;
+    if (Math.abs(walk) > 6) {
+      isMoved.current = true;
     }
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const maxIndex = Math.max(0, products.length - cardsPerView);
-
-  // Auto-advance with 4.5s standby timing
-  useEffect(() => {
-    if (isPaused || maxIndex <= 0) return;
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-    }, autoplayIntervalMs);
-
-    return () => clearInterval(timer);
-  }, [isPaused, maxIndex, autoplayIntervalMs]);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
-
-  // Touch Swipe Handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    setIsPaused(true);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) handleNext();
-      else handlePrev();
+  // Prevent accidental link clicking if user was dragging
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (isMoved.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      isMoved.current = false;
     }
-    touchStartX.current = null;
-    setIsPaused(false);
-  };
-
-  // Calculate translateX percentage: each step translates by (100 / cardsPerView)%
-  const stepPercent = 100 / cardsPerView;
-  const transformStyle = {
-    transform: `translateX(-${currentIndex * stepPercent}%)`,
   };
 
   return (
-    <div className="relative w-full pt-2 pb-6 sm:pb-8">
-      {/* Product Strip Carousel Canvas */}
+    <div className="relative w-full pt-1 pb-4 sm:pt-2 sm:pb-8">
+      {/* Product Strip - Continuous Curious Peek Reel (Flush edge-to-edge on mobile, Swipeable, Peek Edge, No Arrows) */}
       <div
-        className="relative w-full group/carousel"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onClickCapture={handleClickCapture}
+        className="w-full overflow-x-auto scroll-smooth snap-x snap-mandatory overscroll-x-contain touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-y sm:border border-[#EDEAE3] bg-white rounded-none sm:rounded-2xl cursor-grab active:cursor-grabbing select-none"
       >
-        {/* Floating Navigation Controls Outer Edge */}
-        {maxIndex > 0 && (
-          <>
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous products"
-              className="absolute left-0 -translate-x-1/2 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100"
+        <div className="flex w-max min-w-full">
+          {products.map((product, idx) => (
+            <div
+              key={product.id}
+              className={`w-[44vw] sm:w-[32vw] md:w-[26vw] lg:w-[20%] shrink-0 border-r border-[#EDEAE3] last:border-r-0 snap-start ${
+                animateEntry && idx < 6
+                  ? `animate-landing-card stagger-delay-${idx}`
+                  : ''
+              }`}
             >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next products"
-              className="absolute right-0 translate-x-1/2 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-neutral-300 shadow-xl flex items-center justify-center text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-200 cursor-pointer active:scale-90 opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </>
-        )}
-
-        {/* Carousel Tracks - Seamless Attached Cards */}
-        <div className="overflow-hidden border border-[#EDEAE3] bg-white rounded-2xl">
-          <div
-            className="flex transition-transform duration-500 ease-out will-change-transform"
-            style={transformStyle}
-          >
-            {products.map((product, idx) => (
-              <div
-                key={product.id}
-                className={`w-1/2 md:w-1/3 lg:w-1/5 shrink-0 border-r border-[#EDEAE3] last:border-r-0 ${
-                  animateEntry && idx < 6
-                    ? `animate-landing-card stagger-delay-${idx}`
-                    : ''
-                }`}
-              >
-                <StreetProductCard product={product} index={idx} />
-              </div>
-            ))}
-          </div>
+              <StreetProductCard product={product} index={idx} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
