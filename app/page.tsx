@@ -85,7 +85,7 @@ export default function HomePage() {
         <div className="w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-10 pt-4 sm:pt-6">
           <div className="w-full overflow-hidden rounded-2xl bg-[#E9EBEA] shadow-xs">
             <img
-              src="/hero-nude.jpg"
+              src="/street%20wear/street%20wear%20banner.png"
               alt="WOCHA Streetwear Collection"
               className="w-full h-auto object-contain block"
             />
